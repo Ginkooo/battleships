@@ -17,6 +17,7 @@ int createBoard(int y, int x) {
 	}
 	playerOneBoard->dimensions[0] = playerBoardHeight;
 	playerOneBoard->dimensions[1] = x;
+	playerOneBoard->name = 'A';
 
 	PlayerBoard* playerTwoBoard = malloc(sizeof(PlayerBoard));
 	if (playerTwoBoard == NULL) {
@@ -24,6 +25,7 @@ int createBoard(int y, int x) {
 	}
 	playerTwoBoard->dimensions[0] = playerBoardHeight;
 	playerTwoBoard->dimensions[1] = x;
+	playerTwoBoard->name = 'B';
 
 	Board* board = malloc(sizeof(Board));
 	if (board == NULL) {
@@ -38,8 +40,6 @@ int createBoard(int y, int x) {
 
 	initPlayerBoard(playerOneBoard);
 	initPlayerBoard(playerTwoBoard);
-
-	print(board);
 }
 
 int print(Board* self) {

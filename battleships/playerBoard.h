@@ -3,6 +3,7 @@
 
 typedef struct PlayerBoard {
 	int dimensions[2];
+	char name;
 	Cell*** innerBoard;
 } PlayerBoard;
 
