@@ -5,5 +5,5 @@ void initCell(Cell* self) {
 }
 
 char getPrintable(Cell* self) {
-	return '0';
+ 	return cellChars[self->cellType];
 }
