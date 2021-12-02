@@ -4,7 +4,7 @@
 typedef struct PlayerBoard {
 	int dimensions[2];
 	char name;
-	Cell*** innerBoard;
+	Cell** innerBoard;
 } PlayerBoard;
 
 int initPlayerBoard(PlayerBoard* self);

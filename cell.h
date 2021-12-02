@@ -18,4 +18,4 @@ typedef struct Cell {
 
 void initCell(Cell* self);
 
-char getPrintable(Cell* self);
+char getPrintable(Cell self);

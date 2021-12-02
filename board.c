@@ -2,18 +2,18 @@
 #include <stdlib.h>
 #include "board.h"
 #include "playerBoard.h"
-#include "exceptions.h"
 
-int createBoard(int y, int x) {
+Board* createBoard(int y, int x) {
 	if (y % 2 == 1) {
-		return BoardIsNotEven;
+        return NULL;
 	}
 
-	int playerBoardHeight = y / 2;
+	int playerBoardHeight = y;
 
 	PlayerBoard* playerOneBoard = malloc(sizeof(PlayerBoard));
 	if (playerOneBoard == NULL) {
-		return MemoryError;
+        perror("Number of columns have to be even to split them between two players\n");
+		return NULL;;
 	}
 	playerOneBoard->dimensions[0] = playerBoardHeight;
 	playerOneBoard->dimensions[1] = x;
@@ -21,7 +21,7 @@ int createBoard(int y, int x) {
 
 	PlayerBoard* playerTwoBoard = malloc(sizeof(PlayerBoard));
 	if (playerTwoBoard == NULL) {
-		return MemoryError;
+		return NULL;
 	}
 	playerTwoBoard->dimensions[0] = playerBoardHeight;
 	playerTwoBoard->dimensions[1] = x;
@@ -29,17 +29,17 @@ int createBoard(int y, int x) {
 
 	Board* board = malloc(sizeof(Board));
 	if (board == NULL) {
-		return MemoryError;
+		return NULL;
 	}
-
-	board->dimensions[0] = y;
-	board->dimensions[1] = x;
 
 	board->playerBoards[0] = playerOneBoard;
 	board->playerBoards[1] = playerTwoBoard;
 
+
 	initPlayerBoard(playerOneBoard);
 	initPlayerBoard(playerTwoBoard);
+
+    return board;
 }
 
 int print(Board* self) {
@@ -50,7 +50,7 @@ int print(Board* self) {
 		int columnCount = playerBoard->dimensions[1];
 		for (int y = 0; y < rowCount; y++) {
 			for (int x = 0; x < columnCount; x++) {
-				Cell* cell = playerBoard->innerBoard[y][x];
+				Cell cell = playerBoard->innerBoard[y][x];
 				putchar(getPrintable(cell));
 			}
 			putchar('\n');
@@ -65,4 +65,6 @@ int print(Board* self) {
 		isDivided = 1;
 		
 	}
+
+    return 0;
 }

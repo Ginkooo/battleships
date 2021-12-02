@@ -7,13 +7,13 @@
 int initPlayerBoard(PlayerBoard* self) {
 	int columnCount = self->dimensions[1];
 	int rowCount = self->dimensions[0];
-	Cell** innerBoard = malloc(columnCount * sizeof(Cell*));
+	Cell** innerBoard = malloc(rowCount * sizeof(Cell*));
 	if (!innerBoard) {
 		return MemoryError;
 	}
-	for (int x = 0; x < columnCount; x++) {
-		innerBoard[x] = malloc(rowCount * sizeof(Cell));
-		if (!innerBoard[x]) {
+	for (int y = 0; y < rowCount; y++) {
+		innerBoard[y] = malloc(columnCount * sizeof(Cell));
+		if (!innerBoard[y]) {
 			return MemoryError;
 		}
 	}
@@ -21,6 +21,8 @@ int initPlayerBoard(PlayerBoard* self) {
 	self->innerBoard = innerBoard;
 
 	initCells(self);
+
+    return 0;
 }
 
 int initCells(PlayerBoard* self) {
@@ -29,14 +31,12 @@ int initCells(PlayerBoard* self) {
 
 	for (int y = 0; y < rowCount; y++) {
 		for (int x = 0; x < columnCount; x++) {
-			Cell* cell = malloc(sizeof(Cell));
-			if (!cell) {
-				return MemoryError;
-			}
-			initCell(cell);
+			Cell cell;
+			initCell(&cell);
 			self->innerBoard[y][x] = cell;
 		}
 	}
+    return 0;
 }
 
 char** getAs2DCharTable(PlayerBoard* self) {
@@ -50,9 +50,8 @@ char** getAs2DCharTable(PlayerBoard* self) {
 
 	for (int y = 0; y < rowCount; y++) {
 		for (int x = 0; x < columnCount; x++) {
-			representation[y, x] = ' ';
-		}
-	}
-
-	return representation;
+			representation[y][x] = ' ';
+        }
+    }
+    return representation;
 }
