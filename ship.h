@@ -17,12 +17,10 @@ typedef struct Ship {
     int position[2];
     int length;
     int placed;
-    Cell* cells[];
+    Cell** cells;
 } Ship;
 
 Ship* findIthShipOfClass(int ithShip, char* shipClass, Ship ships[], int shipCount);
-
-int refreshCells(Ship* self, Board* board);
 
 Cell** getCellsOccupiedByShip(Ship* self, Board* board);
 

@@ -23,8 +23,6 @@ int startGameLogic(Board* board) {
 
             sscanf(input, "%*s %d %d %c %d %s", &y, &x, &direction, &ithShip, shipClass);
 
-            board->innerBoard[y][x].cellType = REEF;
-
             Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
 
             if (ship == NULL) {
@@ -36,7 +34,9 @@ int startGameLogic(Board* board) {
             ship->direction = direction;
             ship->position[0] = y;
             ship->position[1] = x;
-            refreshCells(ship, board);
+            ship->cells = getCellsOccupiedByShip(ship, board);
+
+            refreshCells(board);
         }
 
         if (beginsWith("PRINT", input)) {

@@ -14,3 +14,12 @@ PlayerBoard* findPlayerBoardByName(const char name, PlayerBoard* playerBoards[],
     }
     return NULL;
 }
+
+int isInArray(void* needle, void* haystack, int length) {
+    for (int i = 0; i < length; i++) {
+        if (&haystack[i] == needle) {
+            return 1;
+        }
+    }
+    return 0;
+}

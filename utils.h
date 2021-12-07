@@ -6,6 +6,8 @@
 
 int beginsWith(const char *pre, const char *str);
 
+int isInArray(void* needle, void* haystack, int length);
+
 PlayerBoard* findPlayerBoardByName(const char name, PlayerBoard* playerBoards[], int playerBoardsCount);
 
 #endif
