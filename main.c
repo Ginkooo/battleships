@@ -4,10 +4,16 @@
 #include "board.h"
 #include "utils.h"
 #include "gameLogic.h"
+#include "ship.h"
 
 int main()
 {
 	puts("Welcome to battleships!");
+
+    int defaultCarriersCount = 1;
+    int defaultBattleshipsCount = 2;
+    int defaultCruisersCount = 3;
+    int defaultDestroyersCount = 4;
 
 	Board* board = createBoard(20, 10);
     if (!board) {
@@ -16,6 +22,9 @@ int main()
 
     PlayerBoard* playerBoards[] = {board->playerBoards[0], board->playerBoards[1]};
     int playerBoardsCount = 2;
+
+    initDefaultShips(playerBoards[0], defaultCarriersCount, defaultBattleshipsCount, defaultCruisersCount, defaultDestroyersCount);
+    initDefaultShips(playerBoards[1], defaultCarriersCount, defaultBattleshipsCount, defaultCruisersCount, defaultDestroyersCount);
 
 	int inputSz = 40;
 	char* input = malloc(inputSz * sizeof(char));
@@ -36,23 +45,30 @@ int main()
 
         if (beginsWith("SET_FLEET", input)) {
             char name = 'A';
-            int a1 = 1;
-            int a2 = 2;
-            int a3 = 3;
-            int a4 = 4;
-            sscanf(input, "%*s %c %d %d %d %d", &name, &a1, &a2, &a3, &a4);
+            int carriersCount = defaultCarriersCount;
+            int battleshipsCount = defaultBattleshipsCount;
+            int cruisersCount = defaultCruisersCount;
+            int destroyersCount = defaultDestroyersCount;
 
             PlayerBoard* playerBoard = findPlayerBoardByName(name, playerBoards, playerBoardsCount);
 
-            playerBoard->numberOfShips[0] = a1;
-            playerBoard->numberOfShips[1] = a2;
-            playerBoard->numberOfShips[2] = a3;
-            playerBoard->numberOfShips[3] = a4;
+            sscanf(input, "%*s %c %d %d %d %d", &name, &carriersCount, &battleshipsCount, &cruisersCount, &destroyersCount);
+
+            int result = initDefaultShips(playerBoard, carriersCount, battleshipsCount, cruisersCount, destroyersCount);
+
+            if (result != 0) {
+                continue;
+            }
         }
 
         if (beginsWith("NEXT_PLAYER", input)) {
             char name = ' ';
             sscanf(input, "%*s %c", &name);
+
+            if (name == ' ') {
+                perror("You have to provide a valid player name");
+                continue;
+            }
         }
 
         if (beginsWith("BOARD_SIZE", input)) {
@@ -82,7 +98,7 @@ int main()
                 continue;
             }
 
-            if (y1 <= playerBoard->dimensions[0] || y2 <= playerBoard->dimensions[0] || abs(y2-y1) < 2 || x1 < playerBoard->dimensions[1] || x1 < playerBoard->dimensions[1] || (abs(x2-x1) < 2)) {
+            if (y1 <= board->dimensions[0] || y2 <= board->dimensions[0] || abs(y2-y1) < 2 || x1 < board->dimensions[1] || x1 < board->dimensions[1] || (abs(x2-x1) < 2)) {
                 perror("Wrong positions");
                 continue;
             }

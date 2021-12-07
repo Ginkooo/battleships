@@ -3,55 +3,54 @@
 #include "exceptions.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "ship.h"
 
-int initPlayerBoard(PlayerBoard* self) {
-	int columnCount = self->dimensions[1];
-	int rowCount = self->dimensions[0];
-	Cell** innerBoard = malloc(rowCount * sizeof(Cell*));
-	if (!innerBoard) {
-		return MemoryError;
-	}
-	for (int y = 0; y < rowCount; y++) {
-		innerBoard[y] = malloc(columnCount * sizeof(Cell));
-		if (!innerBoard[y]) {
-			return MemoryError;
-		}
-	}
+int getNumberOfShips(PlayerBoard* self) {
+    int arrLen = sizeof(self->numberOfShips) / sizeof(int);
 
-	self->innerBoard = innerBoard;
+    int sum = 0;
 
-	initCells(self);
-
-    return 0;
-}
-
-int initCells(PlayerBoard* self) {
-	int rowCount = self->dimensions[0];
-	int columnCount = self->dimensions[1];
-
-	for (int y = 0; y < rowCount; y++) {
-		for (int x = 0; x < columnCount; x++) {
-			Cell cell;
-			initCell(&cell);
-			self->innerBoard[y][x] = cell;
-		}
-	}
-    return 0;
-}
-
-char** getAs2DCharTable(PlayerBoard* self) {
-
-	int columnCount = self->dimensions[1];
-	int rowCount = self->dimensions[0];
-	char** representation = malloc(columnCount * sizeof(Cell*));
-	for (int x = 0; x < columnCount; x++) {
-		representation[x] = malloc(rowCount * sizeof(Cell*));
-	}
-
-	for (int y = 0; y < rowCount; y++) {
-		for (int x = 0; x < columnCount; x++) {
-			representation[y][x] = ' ';
-        }
+    for (int i = 0; i < arrLen; i++) {
+        sum += self->numberOfShips[i];
     }
-    return representation;
+
+    return sum;
+}
+
+int initDefaultShips(PlayerBoard* self, int carriersCount, int battleshipsCount, int cruisersCount, int destroyersCount) {
+    if (carriersCount > 10 || battleshipsCount > 10 || cruisersCount > 10 || destroyersCount > 10) {
+        perror("To many ships, there has to be at most 10 of each kind");
+        return -1;
+    }
+
+    self->numberOfShips[0] = carriersCount;
+    self->numberOfShips[1] = battleshipsCount;
+    self->numberOfShips[2] = cruisersCount;
+    self->numberOfShips[3] = destroyersCount;
+
+    int shipsCount = carriersCount + battleshipsCount + cruisersCount + destroyersCount;
+    self->ships = malloc(shipsCount * sizeof(Ship));
+    int shipIdx = 0;
+    for (int i = 0; i < carriersCount; i++) {
+        Ship ship = {.shipClass = CARRIER, .length = 5};
+        self->ships[shipIdx] = ship;
+        shipIdx++;
+    }
+    for (int i = 0; i < battleshipsCount; i++) {
+        Ship ship = {.shipClass = BATTLESHIP, .length = 4};
+        self->ships[shipIdx] = ship;
+        shipIdx++;
+    }
+    for (int i = 0; i < cruisersCount; i++) {
+        Ship ship = {.shipClass = CRUISER, .length = 3};
+        self->ships[shipIdx] = ship;
+        shipIdx++;
+    }
+    for (int i = 0; i < destroyersCount; i++) {
+        Ship ship = {.shipClass = DESTROYER, .length = 2};
+        self->ships[shipIdx] = ship;
+        shipIdx++;
+    }
+
+    return 0;
 }

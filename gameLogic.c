@@ -2,21 +2,47 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "utils.h"
+#include "ship.h"
+#include "cell.h"
 
 int startGameLogic(Board* board) {
-    int turn = rand() % 2;
+    int turn = 0;
     board->turn = turn;
-    printf("Player %c turn", board->playerBoards[turn]->name);
+    printf("Player %c turn\n", board->playerBoards[turn]->name);
 
-    char* input = malloc(40 * sizeof(char));
+    int inputSz = 40;
+    char* input = malloc(inputSz * sizeof(char));
 
     while (!beginsWith("END", input)) {
+        PlayerBoard* playerBoard = board->playerBoards[turn];
         printf("Type your action: ");
+        fgets(input, inputSz, stdin);
         if (beginsWith("PLACE_SHIP", input)) {
-            int ithShip, y, x;
-            char shipClass, direction;
+            int ithShip = 0, y = 0, x = 0;
+            char shipClass[3] = "DES", direction;
 
-            scanf("%*s, %d %d %c %d %c", &y, &x, &direction, &ithShip, &shipClass);
+            sscanf(input, "%*s %d %d %c %d %s", &y, &x, &direction, &ithShip, shipClass);
+
+            board->innerBoard[y][x].cellType = REEF;
+
+            Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
+
+            if (ship == NULL) {
+                perror("There is no ship like that");
+                continue;
+            }
+
+            ship->placed = 1;
+            ship->direction = direction;
+            ship->position[0] = y;
+            ship->position[1] = x;
+            refreshCells(ship, board);
+        }
+
+        if (beginsWith("PRINT", input)) {
+            print(board);
         }
     }
+
+    return 0;
 }

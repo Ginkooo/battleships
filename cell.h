@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CELL_H
+#define CELL_H
 
 typedef enum CellType {
 	EMPTY,
@@ -19,3 +20,5 @@ typedef struct Cell {
 void initCell(Cell* self);
 
 char getPrintable(Cell self);
+
+#endif

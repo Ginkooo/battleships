@@ -1,16 +1,17 @@
-#pragma once
-#include "cell.h"
+#ifndef PLAYERBOARD_H
+#define PLAYERBOARD_H
+
+typedef struct Ship Ship;
 
 typedef struct PlayerBoard {
-	int dimensions[2];
     int allowedDimensions[4]; //y1, y2, x1, x2
     int numberOfShips[4]; // carrier, battleship, cruiser, destroyer
+    int shipsPlaced[4];
 	char name;
-	Cell** innerBoard;
+    Ship* ships;
 } PlayerBoard;
 
-int initPlayerBoard(PlayerBoard* self);
+int getNumberOfShips(PlayerBoard* self);
+int initDefaultShips(PlayerBoard* self, int carriersCount, int battleshipsCount, int cruisersCount, int destroyersCount);
 
-int initCells(PlayerBoard* self);
-
-char** getAs2DCharTable(PlayerBoard* self);
+#endif
