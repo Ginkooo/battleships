@@ -1,6 +1,8 @@
 #ifndef CELL_H
 #define CELL_H
 
+typedef struct Board Board;
+
 typedef enum CellType {
 	EMPTY,
 	SHIP,
@@ -8,7 +10,7 @@ typedef enum CellType {
 } CellType;
 
 static char cellChars[] = {
-	'0',
+	' ',
 	'+',
 	'#',
 };
@@ -20,5 +22,7 @@ typedef struct Cell {
 void initCell(Cell* self);
 
 char getPrintable(Cell self);
+
+int* getCellPosition(Cell* cell, Board* board);
 
 #endif

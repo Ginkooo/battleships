@@ -42,6 +42,16 @@ int startGameLogic(Board* board) {
         if (beginsWith("PRINT", input)) {
             print(board);
         }
+
+        if (beginsWith("MOVE", input)) {
+            int ithShip;
+            char shipClass[3];
+            char direction;
+            sscanf(input, "%*s %d %s %c", &ithShip, shipClass, &direction);
+            Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
+
+            moveShip(ship, board, direction);
+        }
     }
 
     return 0;

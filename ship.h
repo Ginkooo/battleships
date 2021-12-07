@@ -24,4 +24,8 @@ Ship* findIthShipOfClass(int ithShip, char* shipClass, Ship ships[], int shipCou
 
 int refreshCells(Ship* self, Board* board);
 
+Cell** getCellsOccupiedByShip(Ship* self, Board* board);
+
+int moveShip(Ship* self, Board* board, char direction);
+
 #endif

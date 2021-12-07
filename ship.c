@@ -23,12 +23,10 @@ Ship* findIthShipOfClass(int ithShip, char* shipClass, Ship ships[], int shipCou
     int ith = 0;
     for (int i = 0; i < shipCount; i++) {
         Ship ship = ships[i];
-        printf("%d\n", ship.length);
         if (ship.shipClass != typedShipClass) {
             continue;
         }
         if (ith == ithShip) {
-            printf("%d %d", ith, ithShip);
             return &ships[i];
         }
         ith++;
@@ -37,7 +35,7 @@ Ship* findIthShipOfClass(int ithShip, char* shipClass, Ship ships[], int shipCou
     return NULL;
 }
 
-int refreshCells(Ship* self, Board* board) {
+Cell** getCellsOccupiedByShip(Ship* self, Board* board) {
     Cell** cells = malloc(self->length * sizeof(Cell*));
     int topY = self->position[0], topX = self->position[1];
 
@@ -54,12 +52,53 @@ int refreshCells(Ship* self, Board* board) {
         } else if (self->direction == 'R') {
             currX--;
         } else {
-            return -1;
+            return NULL;
         }
     }
 
+    return cells;
+}
+
+int refreshCells(Ship* self, Board* board) {
+
+    Cell** cells = getCellsOccupiedByShip(self, board);
+
     for (int i = 0; i < self->length; i++) {
         cells[i]->cellType = SHIP;
+    }
+
+    return 0;
+}
+
+int moveShip(Ship* self, Board* board, char direction) {
+    Cell** initialCells = getCellsOccupiedByShip(self, board);
+    int* initialTopPosition = self->position;
+    int newPosition[] = {initialTopPosition[0], initialTopPosition[1]};
+    switch (direction) {
+        case 'F':
+            switch (self->direction) {
+                case 'U':
+                    initialCells[self->length - 1]->cellType = EMPTY;
+                    newPosition[0]--;
+                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    break;
+                case 'D':
+                    initialCells[0]->cellType = EMPTY;
+                    newPosition[0]++;
+                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    break;
+                case 'L':
+                    initialCells[0]->cellType = EMPTY;
+                    newPosition[1]--;
+                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    break;
+                case 'R':
+                    initialCells[self->length - 1]->cellType = EMPTY;
+                    newPosition[1]++;
+                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    break;
+
+            }
     }
 
     return 0;
