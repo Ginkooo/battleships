@@ -8,7 +8,7 @@
 #include "ship.h"
 #include "stateStack.h"
 
-char* inputHistory[4];
+char* inputHistory[11];
 
 int main()
 {

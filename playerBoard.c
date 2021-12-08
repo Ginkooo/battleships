@@ -5,6 +5,17 @@
 #include <stdio.h>
 #include "ship.h"
 
+int verifyIfFitsPlayerAllowedDimensions(int y, int x, int* allowedDimensions) {
+    int yIsInRange = y >= allowedDimensions[0] && y < allowedDimensions[1];
+    int xIsInRange = x >= allowedDimensions[2] && x < allowedDimensions[3];
+
+    if (!yIsInRange || !xIsInRange) {
+        puts("NOT IN STARTING POSITION\n");
+        return 0;
+    }
+    return 1;
+}
+
 int getNumberOfShips(PlayerBoard* self) {
     int arrLen = sizeof(self->numberOfShips) / sizeof(int);
 

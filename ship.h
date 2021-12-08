@@ -3,6 +3,7 @@
 
 typedef struct Board Board;
 typedef struct Cell cell;
+typedef struct PlayerBoard PlayerBoard;
 
 typedef enum {
     NORMAL,
@@ -39,6 +40,7 @@ typedef struct Ship {
     int placed;
     int shots;
     int moves;
+    PlayerBoard* owner;
     ShipPart* parts;
     Cell** cells;
 } Ship;

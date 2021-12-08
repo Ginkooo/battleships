@@ -57,6 +57,9 @@ Cell** getCellsOccupiedByShip(Ship* self, Board* board) {
         } else {
             return NULL;
         }
+        if (!verifyIfFitsPlayerAllowedDimensions(currY, currX, self->owner->allowedDimensions)) {
+            return NULL;
+        }
     }
 
     return cells;

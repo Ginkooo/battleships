@@ -5,8 +5,6 @@
 #include "ship.h"
 #include "cell.h"
 
-Ship* gShip;
-
 int handlePlayerCommand(Board* board, char* input, int inputSz) {
     StateValue* stateValue = peek(&board->stateStack);
     if (stateValue == NULL || *stateValue == STATE) {
@@ -43,20 +41,18 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
             puts("SHIP ALREADY PRESENT\n");
             return -4;
         }
-
-        ship->placed = 1;
-        ship->direction = direction;
-        ship->position[0] = y;
         ship->position[1] = x;
-        ship->cells = getCellsOccupiedByShip(ship, board);
-        ship->randomId = rand();
+        ship->position[0] = y;
+        ship->direction = direction;
+        ship->owner = playerBoard;
 
-        gShip = ship;
-
-
-        if (!ship->cells) {
-            perror("Something went wrong");
+        Cell** cells = getCellsOccupiedByShip(ship, board);
+        if (cells == NULL) {
+            return -3;
         }
+        ship->cells = cells;
+        ship->placed = 1;
+        ship->randomId = rand();
 
         refreshCells(board);
     }

@@ -13,5 +13,6 @@ typedef struct PlayerBoard {
 
 int getNumberOfShips(PlayerBoard* self);
 int initDefaultShips(PlayerBoard* self, int carriersCount, int battleshipsCount, int cruisersCount, int destroyersCount);
+int verifyIfFitsPlayerAllowedDimensions(int y, int x, int* allowedDimensions);
 
 #endif
