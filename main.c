@@ -8,15 +8,8 @@
 #include "ship.h"
 #include "stateStack.h"
 
-char* inputHistory[11];
-
 int main()
 {
-    for (int i = 0; i < 11; i++) {
-        inputHistory[i] = calloc(50, sizeof(char));
-        memcpy(inputHistory[i], "UNDEFINED", strlen("UNDEFINED"));
-    }
-
     int inputCount = 0;
 
     int defaultCarriersCount = 1;
@@ -54,34 +47,14 @@ int main()
 		return -1;
 	}
 
-    int historyCounter = 0;
-
     while (strncmp(input, "END", 3)) {
         board->state = LOBBY;
-        for (int i = 0; i < inputSz; i++) {
-            input[i] = '\0';
-        }
         if (ferror(stdin) || feof(stdin)) {
             return 0;
         }
         fgets(input, inputSz, stdin);
 
-        int isThere = 0;
-        for (int i = 0; i < 11; i++) {
-            if (!strcmp(inputHistory[i], input)) {
-                isThere = 1;
-                break;
-            }
-        }
-        if (!isThere) {
-            strcpy(inputHistory[historyCounter++], input);
-            if (historyCounter == 11) {
-                historyCounter = 0;
-            }
-        }
-
         if (beginsWith("[state]", input)) {
-            StateValue* value = peek(&board->stateStack);
             if (topIsNotNullAndHasValue(&board->stateStack, STATE)) {
                 pop(&board->stateStack);
                 continue;
@@ -91,7 +64,6 @@ int main()
         }
 
         if (beginsWith("[playerA]", input)) {
-            StateValue* value = peek(&board->stateStack);
             if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_ONE)) {
                 pop(&board->stateStack);
                 continue;
@@ -101,7 +73,6 @@ int main()
         }
 
         if (beginsWith("[playerB]", input)) {
-            StateValue* value = peek(&board->stateStack);
             if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_TWO)) {
                 pop(&board->stateStack);
                 continue;

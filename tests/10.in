@@ -7,6 +7,7 @@ PLACE_SHIP 6 0 N 0 BAT
 [playerA]
 [playerB]
 PLACE_SHIP 16 0 N 0 CRU
+PLACE_SHIP 16 2 N 0 DES
 [playerB]
 
 [state]
@@ -20,3 +21,6 @@ SHOOT 17 0
 SHOOT 7 0
 [playerB]
 
+[state]
+PRINT 0
+[state]

@@ -81,25 +81,54 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
 
         sscanf(input, "%*s %d %d", &y, &x);
 
-        Cell* cell = &board->innerBoard[y][x];
+        int isYInBounds = y >= 0 && y < board->dimensions[0];
+        int isXInBounds = x >= 0 && x < board->dimensions[1];
 
-        for (int i = 0; i < getNumberOfShips(board->playerBoards[0]); i++) {
-            Ship* ship = board->playerBoards[0]->ships[i];
-            Cell** shipCells = getCellsOccupiedByShip(ship, board);
-            if (shipCells == NULL) {
-                continue;
+        if (!isYInBounds || !isXInBounds) {
+            printError(input, "FIELD DOES NOT EXIST");
+        }
+
+        int allShipsArePlaced = 1;
+
+        for (int k = 0; k < 2; k++) {
+            if (!allShipsArePlaced) {
+                break;
             }
-            if (!isInArray(cell, shipCells, ship->length)) {
-                continue;
-            }
-            int idx = 0;
-            for (int i = 0; i < ship->length; i++) {
-                if (cell == shipCells[i]) {
+            for (int i = 0; i < getNumberOfShips(board->playerBoards[k]); i++) {
+                Ship* ship = board->playerBoards[k]->ships[i];
+                if (!ship->placed) {
+                    allShipsArePlaced = 0;
                     break;
                 }
-                idx++;
             }
-            ship->parts[idx].damaged = 1;
+        }
+
+        if (!allShipsArePlaced) {
+            printError(input, "NOT ALL SHIPS PLACED");
+        }
+
+
+        Cell* cell = &board->innerBoard[y][x];
+
+        for (int k = 0; k < 2; k++) {
+            for (int i = 0; i < getNumberOfShips(board->playerBoards[k]); i++) {
+                Ship* ship = board->playerBoards[k]->ships[i];
+                Cell** shipCells = getCellsOccupiedByShip(ship, board);
+                if (shipCells == NULL) {
+                    continue;
+                }
+                if (!isInArray(cell, shipCells, ship->length)) {
+                    continue;
+                }
+                int idx = 0;
+                for (int i = 0; i < ship->length; i++) {
+                    if (cell == shipCells[i]) {
+                        break;
+                    }
+                    idx++;
+                }
+                ship->parts[idx].damaged = 1;
+            }
         }
     }
 
