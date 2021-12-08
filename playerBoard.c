@@ -82,3 +82,25 @@ int initDefaultShips(PlayerBoard* self, int carriersCount, int battleshipsCount,
 
     return 0;
 }
+
+int getRemainitParts(PlayerBoard* self) {
+    int ret = 0;
+
+    Ship** ships = self->ships;
+    int shipCount = getNumberOfShips(self);
+
+    for (int i = 0; i < shipCount; i++) {
+         Ship* ship = ships[i];
+         if (!ship->placed) {
+             continue;
+         }
+         for (int j = 0; j < ship->length; j++) {
+             ShipPart* part = &ship->parts[j];
+             if (!part->damaged) {
+                 ret++;
+             }
+         }
+    }
+
+    return ret;
+}

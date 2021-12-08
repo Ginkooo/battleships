@@ -88,23 +88,19 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
             printError(input, "FIELD DOES NOT EXIST");
         }
 
-        int allShipsArePlaced = 1;
-
         for (int k = 0; k < 2; k++) {
-            if (!allShipsArePlaced) {
-                break;
-            }
             for (int i = 0; i < getNumberOfShips(board->playerBoards[k]); i++) {
                 Ship* ship = board->playerBoards[k]->ships[i];
                 if (!ship->placed) {
-                    allShipsArePlaced = 0;
+                    printError(input, "NOT ALL SHIPS PLACED");
                     break;
                 }
             }
         }
 
-        if (!allShipsArePlaced) {
-            printError(input, "NOT ALL SHIPS PLACED");
+        for (int k = 0; k < 2; k++) {
+            for (int i = 0; i < getNumberOfShips(board->playerBoards[k]); i++) {
+            }
         }
 
 

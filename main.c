@@ -7,6 +7,7 @@
 #include "gameLogic.h"
 #include "ship.h"
 #include "stateStack.h"
+#include "exceptions.h"
 
 int main()
 {
@@ -42,6 +43,7 @@ int main()
     initDefaultShips(playerBoards[1], defaultCarriersCount, defaultBattleshipsCount, defaultCruisersCount, defaultDestroyersCount);
 
 	int inputSz = 40;
+    StateValue* lastState = NULL;
 	char* input = calloc(inputSz, sizeof(char));
 	if (!input) {
 		return -1;
@@ -66,7 +68,11 @@ int main()
         if (beginsWith("[playerA]", input)) {
             if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_ONE)) {
                 pop(&board->stateStack);
+                *lastState = PLAYER_ONE;
                 continue;
+            }
+            if (lastState != NULL && *lastState == PLAYER_ONE) {
+                printError(input, "THE OTHER PLAYER EXPECTED");
             }
             push(&board->stateStack, PLAYER_ONE);
             continue;
@@ -75,7 +81,11 @@ int main()
         if (beginsWith("[playerB]", input)) {
             if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_TWO)) {
                 pop(&board->stateStack);
+                *lastState = PLAYER_TWO;
                 continue;
+            }
+            if (lastState != NULL && *lastState == PLAYER_TWO) {
+                printError(input, "THE OTHER PLAYER EXPECTED");
             }
             push(&board->stateStack, PLAYER_TWO);
             continue;
