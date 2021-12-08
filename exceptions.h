@@ -6,4 +6,6 @@ enum exception {
 	MemoryError,
 };
 
+void printError(char* input, char* reason);
+
 #endif

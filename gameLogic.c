@@ -4,6 +4,7 @@
 #include "utils.h"
 #include "ship.h"
 #include "cell.h"
+#include "exceptions.h"
 
 int handlePlayerCommand(Board* board, char* input, int inputSz) {
     StateValue* stateValue = peek(&board->stateStack);
@@ -26,19 +27,19 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
         int xIsInRange = x >= playerBoard->allowedDimensions[2] && x < playerBoard->allowedDimensions[3];
 
         if (!yIsInRange || !xIsInRange) {
-            puts("NOT IN STARTING POSITION\n");
+            printError(input, "NOT IN STARTING POSITION");
             return -3;
         }
 
         Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
 
         if (ship == NULL) {
-            puts("ALL SHIPS OF THE CLASS ALREADY SET\n");
+            printError(input, "ALL SHIPS OF THE CLASS ALREADY SET");
             return -5;
         }
 
         if (ship->placed) {
-            puts("SHIP ALREADY PRESENT\n");
+            printError(input, "SHIP ALREADY PRESENT");
             return -4;
         }
         ship->position[1] = x;
@@ -48,6 +49,7 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
 
         Cell** cells = getCellsOccupiedByShip(ship, board);
         if (cells == NULL) {
+            printError(input, "NOT IN STARTING POSITION");
             return -3;
         }
         ship->cells = cells;
