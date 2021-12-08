@@ -14,7 +14,7 @@ int main()
 {
 	puts("Welcome to battleships!");
 
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 4; i++) {
         inputHistory[i] = malloc(50*sizeof(char));
     }
 
@@ -25,7 +25,7 @@ int main()
     int defaultCruisersCount = 3;
     int defaultDestroyersCount = 4;
 
-	Board* board = createBoard(20, 10);
+	Board* board = createBoard(21, 10);
     if (!board) {
         perror("Something went wrong");
     }
@@ -38,7 +38,7 @@ int main()
 
     playerBoards[0]->allowedDimensions[0] = 0;
     playerBoards[0]->allowedDimensions[1] = board->dimensions[0] / 2;
-    playerBoards[1]->allowedDimensions[0] = board->dimensions[0] / 2 + 1;
+    playerBoards[1]->allowedDimensions[0] = board->dimensions[0] / 2;
     playerBoards[1]->allowedDimensions[1] = board->dimensions[0];
     playerBoards[0]->allowedDimensions[2] = 0;
     playerBoards[0]->allowedDimensions[3] = board->dimensions[1];
