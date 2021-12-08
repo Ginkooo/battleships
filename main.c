@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "board.h"
+#include "string.h"
 #include "utils.h"
 #include "gameLogic.h"
 #include "ship.h"
 #include "stateStack.h"
 
-char* inputHistory[50];
+char* inputHistory[4];
 
 int main()
 {
@@ -58,7 +59,11 @@ int main()
         printf("What do you want to do?: ");
         fgets(input, inputSz, stdin);
         inputHistory[inputCount] = input;
+        memcpy(inputHistory[inputCount], input, inputSz);
         inputCount++;
+        if (inputCount == 4) {
+            inputCount = 0;
+        }
 
         if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_ONE) || topIsNotNullAndHasValue(&board->stateStack, PLAYER_TWO)) {
             handlePlayerCommand(board, input, inputSz);
