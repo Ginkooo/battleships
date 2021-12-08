@@ -98,11 +98,6 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
             }
         }
 
-        for (int k = 0; k < 2; k++) {
-            for (int i = 0; i < getNumberOfShips(board->playerBoards[k]); i++) {
-            }
-        }
-
 
         Cell* cell = &board->innerBoard[y][x];
 
@@ -125,6 +120,16 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
                 }
                 ship->parts[idx].damaged = 1;
             }
+        }
+
+        if (!getRemainitParts(board->playerBoards[0])) {
+            printf("%c WON", board->playerBoards[1]->name);
+            return 0;
+        }
+
+        if (!getRemainitParts(board->playerBoards[1])) {
+            printf("%c WON", board->playerBoards[0]->name);
+            return 0;
         }
     }
 

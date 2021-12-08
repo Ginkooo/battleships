@@ -28,6 +28,7 @@ int getNumberOfShips(PlayerBoard* self) {
     return sum;
 }
 
+
 int initDefaultShips(PlayerBoard* self, int carriersCount, int battleshipsCount, int cruisersCount, int destroyersCount) {
     if (carriersCount > 10 || battleshipsCount > 10 || cruisersCount > 10 || destroyersCount > 10) {
         perror("To many ships, there has to be at most 10 of each kind");

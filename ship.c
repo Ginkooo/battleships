@@ -7,6 +7,23 @@
 #include "ship.h"
 #include "utils.h"
 
+int initAndPlaceShip(PlayerBoard* playerBoard, Board* board, int y, int x, char direction, int ithShip, char* shipClass, char* shipParts) {
+    Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
+    if (!ship) {
+        return -1;
+    }
+    ship->position[0] = y;
+    ship->position[1] = x;
+    ship->direction = direction;
+    ship->cells = getCellsOccupiedByShip(ship, board);
+    for (int i = 0; i < ship->length; i++) {
+        int damaged = shipParts[i] == '0' ? 0 : 1;
+        ship->parts[i].damaged = damaged;
+    }
+    ship->placed = 1;
+    return 0;
+}
+
 Ship* findIthShipOfClass(int ithShip, char* shipClass, Ship** ships, int shipCount) {
     ShipClass typedShipClass;
     if (strcmp("CAR", shipClass) == 0) {

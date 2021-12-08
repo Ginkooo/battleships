@@ -43,7 +43,7 @@ int main()
     initDefaultShips(playerBoards[1], defaultCarriersCount, defaultBattleshipsCount, defaultCruisersCount, defaultDestroyersCount);
 
 	int inputSz = 40;
-    StateValue* lastState = NULL;
+    StateValue lastState = STATE;
 	char* input = calloc(inputSz, sizeof(char));
 	if (!input) {
 		return -1;
@@ -68,10 +68,10 @@ int main()
         if (beginsWith("[playerA]", input)) {
             if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_ONE)) {
                 pop(&board->stateStack);
-                *lastState = PLAYER_ONE;
+                lastState = PLAYER_ONE;
                 continue;
             }
-            if (lastState != NULL && *lastState == PLAYER_ONE) {
+            if (lastState == PLAYER_ONE) {
                 printError(input, "THE OTHER PLAYER EXPECTED");
             }
             push(&board->stateStack, PLAYER_ONE);
@@ -81,10 +81,10 @@ int main()
         if (beginsWith("[playerB]", input)) {
             if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_TWO)) {
                 pop(&board->stateStack);
-                *lastState = PLAYER_TWO;
+                lastState = PLAYER_TWO;
                 continue;
             }
-            if (lastState != NULL && *lastState == PLAYER_TWO) {
+            if (lastState == PLAYER_TWO) {
                 printError(input, "THE OTHER PLAYER EXPECTED");
             }
             push(&board->stateStack, PLAYER_TWO);
@@ -156,6 +156,16 @@ int main()
             int x;
             sscanf(input, "%*s %d %d", &y, &x);
             board->innerBoard[y][x].cellType = REEF;
+        }
+
+        if (beginsWith("SHIP", input)) {
+            char name, direction;
+            int y, x, ithShip;
+            char shipClass[4];
+            char shipParts[6];
+            sscanf(input, "%*s %c %d %d %c %d %s %s", &name, &y, &x, &direction, &ithShip, shipClass, shipParts);
+
+            initAndPlaceShip(findPlayerBoardByName(name, playerBoards, 2), board, y, x, direction, ithShip, shipClass, shipParts);
         }
 
         if (beginsWith("INIT_POSITION", input)) {

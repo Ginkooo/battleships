@@ -33,7 +33,6 @@ StateValue* pop(StateStack* self) {
     GameState* state = self->top;
     self->top = state->prev;
     self->size--;
-    *lastPoppedState = state->value;
     return &state->value;
 }
 
