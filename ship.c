@@ -7,7 +7,7 @@
 #include "ship.h"
 #include "utils.h"
 
-int initAndPlaceShip(PlayerBoard* playerBoard, Board* board, int y, int x, char direction, int ithShip, char* shipClass, char* shipParts) {
+int initAndPlaceShip(PlayerBoard* playerBoard, Board* board, int y, int x, char direction, int ithShip, char* shipClass, char* shipParts, char* input) {
     Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
     if (!ship) {
         return -1;
@@ -31,7 +31,7 @@ int initAndPlaceShip(PlayerBoard* playerBoard, Board* board, int y, int x, char 
     }
     ship->placed = 1;
 
-    refreshCells(board);
+    refreshCells(board, input);
 
     return 0;
 }
@@ -97,7 +97,7 @@ Cell** getCellsOccupiedByShip(Ship* self, Board* board) {
 }
 
 
-int moveShip(Ship* self, Board* board, char direction) {
+int moveShip(Ship* self, Board* board, char direction, char* input) {
     Cell** initialCells = getCellsOccupiedByShip(self, board);
     int* initialBottomPosition = getCellPosition(initialCells[self->length - 1], board);
     switch (direction) {
@@ -167,7 +167,7 @@ int moveShip(Ship* self, Board* board, char direction) {
             break;
     }
 
-    refreshCells(board);
+    refreshCells(board, input);
 
     return 0;
 }

@@ -72,6 +72,9 @@ int main()
                 continue;
             }
             if (lastState == PLAYER_ONE) {
+                int len = strlen(input);
+                input[len] = ' ';
+                input[len + 1] = '\0';
                 printError(input, "THE OTHER PLAYER EXPECTED");
             }
             push(&board->stateStack, PLAYER_ONE);
@@ -85,6 +88,9 @@ int main()
                 continue;
             }
             if (lastState == PLAYER_TWO) {
+                int len = strlen(input);
+                input[len] = ' ';
+                input[len + 1] = '\0';
                 printError(input, "THE OTHER PLAYER EXPECTED");
             }
             push(&board->stateStack, PLAYER_TWO);
@@ -165,7 +171,7 @@ int main()
             char shipParts[6];
             sscanf(input, "%*s %c %d %d %c %d %s %s", &name, &y, &x, &direction, &ithShip, shipClass, shipParts);
 
-            initAndPlaceShip(findPlayerBoardByName(name, playerBoards, 2), board, y, x, direction, ithShip, shipClass, shipParts);
+            initAndPlaceShip(findPlayerBoardByName(name, playerBoards, 2), board, y, x, direction, ithShip, shipClass, shipParts, input);
         }
 
         if (beginsWith("INIT_POSITION", input)) {

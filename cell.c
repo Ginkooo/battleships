@@ -5,6 +5,7 @@
 #include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "exceptions.h"
 
 void initCell(Cell* self) {
 	self->cellType = EMPTY;
@@ -34,7 +35,7 @@ int* getCellPosition(Cell* cell, Board* board) {
 }
 
 
-int refreshCells(Board* board) {
+int refreshCells(Board* board, char* input) {
     int cellIdx = 0;
     int boardSize = board->dimensions[0] * board->dimensions[1];
     Cell** cellsChecked = malloc(boardSize * sizeof(Cell*));
@@ -51,6 +52,9 @@ int refreshCells(Board* board) {
             for (int j = 0; j < ship->length; j++) {
                 Cell* cellOccupied = cellsOccupiedByShip[j];
                 cellOccupied->cellType = SHIP;
+                if (isInArray(cellOccupied, cellsChecked, boardSize)) {
+                    printError(input, "PLACING SHIP TOO CLOSE TO OTHER SHIP");
+                }
                 cellsChecked[cellIdx] = cellOccupied;
                 cellIdx++;
             }

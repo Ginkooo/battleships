@@ -49,9 +49,9 @@ Ship* findIthShipOfClass(int ithShip, char* shipClass, Ship** ships, int shipCou
 
 Cell** getCellsOccupiedByShip(Ship* self, Board* board);
 
-int moveShip(Ship* self, Board* board, char direction);
+int moveShip(Ship* self, Board* board, char direction, char* input);
 
-int initAndPlaceShip(PlayerBoard* playerBoard, Board* board, int y, int x, char direction, int ithShip, char* shipClass, char* shipParts);
+int initAndPlaceShip(PlayerBoard* playerBoard, Board* board, int y, int x, char direction, int ithShip, char* shipClass, char* shipParts, char* input);
 
 char getCharOfShipPart(Cell* cell, Board* board, int option);
 

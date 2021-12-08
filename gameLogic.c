@@ -57,7 +57,7 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
         ship->placed = 1;
         ship->randomId = rand();
 
-        refreshCells(board);
+        refreshCells(board, input);
     }
 
     if (beginsWith("PRINT", input)) {
@@ -73,7 +73,7 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
         sscanf(input, "%*s %d %s %c", &ithShip, shipClass, &direction);
         Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
 
-        moveShip(ship, board, direction);
+        moveShip(ship, board, direction, input);
     }
 
     if (beginsWith("SHOOT", input)) {

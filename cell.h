@@ -25,6 +25,6 @@ char getPrintable(Cell* self, Board* board, int option);
 
 int* getCellPosition(Cell* cell, Board* board);
 
-int refreshCells(Board* board);
+int refreshCells(Board* board, char* input);
 
 #endif
