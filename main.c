@@ -7,12 +7,11 @@
 #include "ship.h"
 #include "stateStack.h"
 
-char** inputHistory;
+char* inputHistory[50];
 
 int main()
 {
 	puts("Welcome to battleships!");
-    inputHistory = malloc(50*sizeof(char*));
 
     for (int i = 0; i < 50; i++) {
         inputHistory[i] = malloc(50*sizeof(char));
