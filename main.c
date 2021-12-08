@@ -194,11 +194,11 @@ int main()
                         y2 = board->dimensions[0] / 2;
                         break;
                     case 'B':
-                        y1 = board->dimensions[0] / 2 + 1;
+                        y1 = board->dimensions[0] / 2;
                         y2 = board->dimensions[0];
                         break;
                 }
-                x1 = board->dimensions[1];
+                x1 = 0;
                 x2 = board->dimensions[1];
             }
 
