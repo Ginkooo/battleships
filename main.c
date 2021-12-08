@@ -61,6 +61,9 @@ int main()
         for (int i = 0; i < inputSz; i++) {
             input[i] = '\0';
         }
+        if (ferror(stdin) || feof(stdin)) {
+            return 0;
+        }
         fgets(input, inputSz, stdin);
 
         int isThere = 0;
@@ -116,7 +119,6 @@ int main()
             int option = 0;
             sscanf(input, "%*s %d", &option);
             print(board, option);
-            exit(0);
 
             continue;
         }
