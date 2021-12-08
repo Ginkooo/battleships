@@ -174,6 +174,10 @@ int main()
             initAndPlaceShip(findPlayerBoardByName(name, playerBoards, 2), board, y, x, direction, ithShip, shipClass, shipParts, input);
         }
 
+        if (beginsWith("EXTENDED_SHIPS", input)) {
+            board->extendedShips = 1;
+        }
+
         if (beginsWith("INIT_POSITION", input)) {
             char name = 'A';
             int y1, y2, x1, x2;

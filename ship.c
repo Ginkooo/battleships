@@ -6,6 +6,8 @@
 #include "cell.h"
 #include "ship.h"
 #include "utils.h"
+#include "exceptions.h"
+#include <math.h>
 
 int initAndPlaceShip(PlayerBoard* playerBoard, Board* board, int y, int x, char direction, int ithShip, char* shipClass, char* shipParts, char* input) {
     Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
@@ -207,4 +209,81 @@ char getCharOfShipPart(Cell* cell, Board* board, int option) {
         }
     }
     return '+';
+}
+
+int handleExtendedShooting(int ithShip, char* shipClass, int y, int x, char* input, Board* board, PlayerBoard* playerBoard) {
+    Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
+    if (!ship) {
+        printError(input, "NO SHIP");
+    }
+    ShipPart* cannon = findShipPart(CANNON, ship);
+    if (!cannon) {
+        printError(input, "CRITICAL ERROR");
+    }
+
+    if (cannon->damaged) {
+        printError(input, "SHIP CANNOT SHOOT");
+    }
+
+    Cell* cell = findShipCellByShipPart(CANNON, ship);
+    int* cannonPosition = getCellPosition(cell, board);
+
+    double range = sqrt(pow(x - cannonPosition[1], 2) + pow(y - cannonPosition[0], 2));
+
+    if (range > ship->length) {
+        printError(input, "SHOOTING TOO FAR");
+    }
+
+    return shootAtCell(cell, board);
+}
+
+ShipPart* findShipPart(ShipPartType type, Ship* ship) {
+    for (int i = 0; i < ship->length; i++) {
+        if (ship->parts[i].type == type) {
+            return &ship->parts[i];
+        }
+    }
+    return NULL;
+}
+
+Cell* findShipCellByShipPart(ShipPartType type, Ship* ship) {
+    for (int i = 0; i < ship->length; i++) {
+        if (ship->parts[i].type == type) {
+            return ship->cells[i];
+        }
+    }
+    return NULL;
+}
+
+int shootAtCell(Cell* cell, Board* board) {
+    for (int k = 0; k < 2; k++) {
+        for (int i = 0; i < getNumberOfShips(board->playerBoards[k]); i++) {
+            Ship* ship = board->playerBoards[k]->ships[i];
+            Cell** shipCells = getCellsOccupiedByShip(ship, board);
+            if (shipCells == NULL) {
+                continue;
+            }
+            if (!isInArray(cell, shipCells, ship->length)) {
+                continue;
+            }
+            int idx = 0;
+            for (int i = 0; i < ship->length; i++) {
+                if (cell == shipCells[i]) {
+                    break;
+                }
+                idx++;
+            }
+            ship->parts[idx].damaged = 1;
+        }
+    }
+
+    if (!getRemainitParts(board->playerBoards[0])) {
+        printf("%c won", board->playerBoards[1]->name);
+        exit(0);
+    }
+
+    if (!getRemainitParts(board->playerBoards[1])) {
+        printf("%c won", board->playerBoards[0]->name);
+        exit(0);
+    }
 }

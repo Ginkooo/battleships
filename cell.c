@@ -51,7 +51,11 @@ int refreshCells(Board* board, char* input) {
             Cell** cellsOccupiedByShip = getCellsOccupiedByShip(ship, board);
             for (int j = 0; j < ship->length; j++) {
                 Cell* cellOccupied = cellsOccupiedByShip[j];
+                int* pos = getCellPosition(cellOccupied, board);
                 cellOccupied->cellType = SHIP;
+                if (cellOccupied->cellType == REEF) {
+                    printError(input, "PLACING SHIP ON REEF");
+                }
                 if (isInArray(cellOccupied, cellsChecked, boardSize)) {
                     printError(input, "PLACING SHIP TOO CLOSE TO OTHER SHIP");
                 }

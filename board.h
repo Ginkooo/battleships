@@ -19,6 +19,7 @@ typedef struct Board {
     int turn;
 	Cell** innerBoard;
     StateStack stateStack;
+    int extendedShips;
 } Board;
 
 Board* createBoard(int y, int x);

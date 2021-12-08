@@ -20,6 +20,7 @@ Board* createBoard(int y, int x) {
 	playerTwoBoard->name = 'B';
 
 	Board* board = malloc(sizeof(Board));
+    board->extendedShips = 0;
 	if (board == NULL) {
 		return NULL;
 	}

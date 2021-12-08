@@ -3,6 +3,7 @@ import os
 import glob
 import subprocess
 from subprocess import PIPE, STDOUT
+import difflib
 
 this_file = Path(__file__)
 test_files = []
@@ -15,7 +16,7 @@ c_files = glob.glob(f"*.c")
 
 print(c_files)
 
-subprocess.check_call(["/usr/bin/clang", *c_files])
+subprocess.check_call(["/usr/bin/clang", "-lm", *c_files])
 
 print("compilation ended")
 
@@ -24,7 +25,6 @@ for file in sorted(
     glob.glob(f"{tests_folder}/*.in"),
     key=lambda name: int(name.split("/")[-1].split(".")[0]),
 ):
-    print(f"running {file}")
     infile = tests_folder / file
     number, extension = file.split(".")
     outfile = f"{number}.out"
@@ -35,4 +35,14 @@ for file in sorted(
         out, _ = proc.communicate(input=open(infile, "rb").read(), timeout=2)
     except:
         out, _ = proc.communicate()
-    print(out.decode())
+
+    equal = out.decode() == open(outfile).read()
+    if not equal:
+        print("Got:")
+        print(out.decode())
+        print()
+        print("Expected:")
+        print(open(outfile).read())
+        print("Input:")
+        print(infile.read_text())
+        input()

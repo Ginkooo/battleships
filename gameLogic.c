@@ -77,6 +77,30 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
     }
 
     if (beginsWith("SHOOT", input)) {
+        if (board->extendedShips) {
+            int ithShip;
+            char shipClass[4];
+            int y, x;
+
+            sscanf(input, "%*s %d %s %d %d", &ithShip, shipClass, &y, &x);
+            int isYInBounds = y >= 0 && y < board->dimensions[0];
+            int isXInBounds = x >= 0 && x < board->dimensions[1];
+
+            if (!isYInBounds || !isXInBounds) {
+                printError(input, "FIELD DOES NOT EXIST");
+            }
+
+            for (int k = 0; k < 2; k++) {
+                for (int i = 0; i < getNumberOfShips(board->playerBoards[k]); i++) {
+                    Ship* ship = board->playerBoards[k]->ships[i];
+                    if (!ship->placed) {
+                        printError(input, "NOT ALL SHIPS PLACED");
+                        break;
+                    }
+                }
+            }
+            handleExtendedShooting(ithShip, shipClass, y, x, input, board, playerBoard);
+        }
         int y, x;
 
         sscanf(input, "%*s %d %d", &y, &x);
@@ -101,36 +125,8 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
 
         Cell* cell = &board->innerBoard[y][x];
 
-        for (int k = 0; k < 2; k++) {
-            for (int i = 0; i < getNumberOfShips(board->playerBoards[k]); i++) {
-                Ship* ship = board->playerBoards[k]->ships[i];
-                Cell** shipCells = getCellsOccupiedByShip(ship, board);
-                if (shipCells == NULL) {
-                    continue;
-                }
-                if (!isInArray(cell, shipCells, ship->length)) {
-                    continue;
-                }
-                int idx = 0;
-                for (int i = 0; i < ship->length; i++) {
-                    if (cell == shipCells[i]) {
-                        break;
-                    }
-                    idx++;
-                }
-                ship->parts[idx].damaged = 1;
-            }
-        }
+        shootAtCell(cell, board);
 
-        if (!getRemainitParts(board->playerBoards[0])) {
-            printf("%c won", board->playerBoards[1]->name);
-            return 0;
-        }
-
-        if (!getRemainitParts(board->playerBoards[1])) {
-            printf("%c won", board->playerBoards[0]->name);
-            return 0;
-        }
     }
 
     return 0;
