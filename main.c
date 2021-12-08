@@ -44,6 +44,8 @@ int main()
             int option;
             sscanf(input, "%*s %d", &option);
             print(board);
+
+            continue;
         }
 
         if (beginsWith("SET_FLEET", input)) {
@@ -62,6 +64,8 @@ int main()
             if (result != 0) {
                 continue;
             }
+
+            continue;
         }
 
         if (beginsWith("NEXT_PLAYER", input)) {
@@ -72,6 +76,8 @@ int main()
                 perror("You have to provide a valid player name");
                 continue;
             }
+
+            continue;
         }
 
         if (beginsWith("BOARD_SIZE", input)) {
@@ -83,6 +89,8 @@ int main()
                 perror("Something went wrong");
                 continue;
             }
+
+            continue;
         }
 
         if (beginsWith("INIT_POSITION", input)) {
@@ -110,13 +118,41 @@ int main()
             playerBoard->allowedDimensions[1] = y2;
             playerBoard->allowedDimensions[2] = x1;
             playerBoard->allowedDimensions[3] = x2;
-        }
 
-        if (beginsWith("START", input)) {
-            board->state = PLAYING;
-            startGameLogic(board);
             continue;
         }
+
+        if (beginsWith("[state]", input)) {
+            StateValue* value = peek(&board->stateStack);
+            if (value != NULL && *value == STATE) {
+                pop(&board->stateStack);
+                continue;
+            }
+            push(&board->stateStack, STATE);
+            continue;
+        }
+
+        if (beginsWith("[playerA]", input)) {
+            StateValue* value = peek(&board->stateStack);
+            if (value != NULL && *value == PLAYER_ONE) {
+                pop(&board->stateStack);
+                continue;
+            }
+            push(&board->stateStack, PLAYER_ONE);
+            continue;
+        }
+
+        if (beginsWith("[playerB]", input)) {
+            StateValue* value = peek(&board->stateStack);
+            if (value != NULL && *value == PLAYER_TWO) {
+                pop(&board->stateStack);
+                continue;
+            }
+            push(&board->stateStack, PLAYER_TWO);
+            continue;
+        }
+
+        handlePlayerCommand(board, input, inputSz);
 
         puts("\n");
     }

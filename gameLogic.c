@@ -5,61 +5,54 @@
 #include "ship.h"
 #include "cell.h"
 
-int startGameLogic(Board* board) {
+int handlePlayerCommand(Board* board, char* input, int inputSz) {
     int turn = 0;
     board->turn = turn;
-    printf("Player %c turn\n", board->playerBoards[turn]->name);
 
-    int inputSz = 40;
-    char* input = malloc(inputSz * sizeof(char));
+    PlayerBoard* playerBoard = board->playerBoards[turn];
+    fgets(input, inputSz, stdin);
+    if (beginsWith("PLACE_SHIP", input)) {
+        int ithShip = 0, y = 0, x = 0;
+        char shipClass[3] = "DES", direction;
 
-    while (!beginsWith("END", input)) {
-        PlayerBoard* playerBoard = board->playerBoards[turn];
-        printf("Type your action: ");
-        fgets(input, inputSz, stdin);
-        if (beginsWith("PLACE_SHIP", input)) {
-            int ithShip = 0, y = 0, x = 0;
-            char shipClass[3] = "DES", direction;
+        sscanf(input, "%*s %d %d %c %d %s", &y, &x, &direction, &ithShip, shipClass);
 
-            sscanf(input, "%*s %d %d %c %d %s", &y, &x, &direction, &ithShip, shipClass);
+        Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
 
-            Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
-
-            if (ship == NULL) {
-                perror("There is no ship like that");
-                continue;
-            }
-
-            ship->placed = 1;
-            ship->direction = direction;
-            ship->position[0] = y;
-            ship->position[1] = x;
-            ship->cells = getCellsOccupiedByShip(ship, board);
-
-            refreshCells(board);
+        if (ship == NULL) {
+            perror("There is no ship like that");
+            return -2;
         }
 
-        if (beginsWith("PRINT", input)) {
-            print(board);
-        }
+        ship->placed = 1;
+        ship->direction = direction;
+        ship->position[0] = y;
+        ship->position[1] = x;
+        ship->cells = getCellsOccupiedByShip(ship, board);
 
-        if (beginsWith("MOVE", input)) {
-            int ithShip;
-            char shipClass[3];
-            char direction;
-            sscanf(input, "%*s %d %s %c", &ithShip, shipClass, &direction);
-            Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
+        refreshCells(board);
+    }
 
-            moveShip(ship, board, direction);
-        }
+    if (beginsWith("PRINT", input)) {
+        print(board);
+    }
 
-        if (beginsWith("SHOOT", input)) {
-            int y, x;
+    if (beginsWith("MOVE", input)) {
+        int ithShip;
+        char shipClass[3];
+        char direction;
+        sscanf(input, "%*s %d %s %c", &ithShip, shipClass, &direction);
+        Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
 
-            sscanf(input, "%*s %d %d", &y, &x);
+        moveShip(ship, board, direction);
+    }
 
-            Cell* cell = &board->innerBoard[y][x];
-        }
+    if (beginsWith("SHOOT", input)) {
+        int y, x;
+
+        sscanf(input, "%*s %d %d", &y, &x);
+
+        Cell* cell = &board->innerBoard[y][x];
     }
 
     return 0;

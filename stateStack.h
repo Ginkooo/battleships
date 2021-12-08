@@ -1,17 +1,26 @@
+#ifndef STATESTACK_H
+#define STATESTACK_H
+
 typedef enum {
-    LOBBY,
+    STATE,
     PLAYER_ONE,
     PLAYER_TWO,
 } StateValue;
 
-typedef struct State {
+typedef struct GameState {
     StateValue value;
-    State* prev;
-} State;
+    struct GameState* prev;
+} GameState;
 
 typedef struct StateStack {
-    State* top;
+    GameState* top;
+    int size;
 
 } StateStack;
 
 StateStack init();
+void push(StateStack* self, StateValue);
+StateValue pop(StateStack* self);
+StateValue* peek(StateStack* self);
+
+#endif

@@ -3,6 +3,6 @@
 
 typedef struct Board Board;
 
-int startGameLogic(Board* board);
+int handlePlayerCommand(Board* board, char* input, int inputSz);
 
 #endif

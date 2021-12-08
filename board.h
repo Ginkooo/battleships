@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include <stdio.h>
+#include "stateStack.h"
 
 typedef struct Cell Cell;
 typedef struct PlayerBoard PlayerBoard;
@@ -17,6 +18,7 @@ typedef struct Board {
     State state;
     int turn;
 	Cell** innerBoard;
+    StateStack stateStack;
 } Board;
 
 Board* createBoard(int y, int x);

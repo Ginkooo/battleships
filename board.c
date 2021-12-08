@@ -3,6 +3,7 @@
 #include "board.h"
 #include "playerBoard.h"
 #include "cell.h"
+#include "stateStack.h"
 
 Board* createBoard(int y, int x) {
 	if (y % 2 == 1) {
@@ -48,6 +49,9 @@ Board* createBoard(int y, int x) {
 	}
 
 	board->innerBoard = innerBoard;
+
+    StateStack stateStack = init();
+    board->stateStack = stateStack;
 
 	initCells(board);
 
