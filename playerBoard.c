@@ -68,7 +68,7 @@ int initDefaultShips(PlayerBoard* self, int carriersCount, int battleshipsCount,
 
     for (int i = 0; i < shipsCount; i++) {
         Ship* ship = self->ships[i];
-        ship->parts = malloc(ship->length * sizeof(ShipPart));
+        ship->parts = calloc(ship->length, sizeof(ShipPart));
 
         ship->owner = self;
 
