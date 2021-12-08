@@ -116,6 +116,7 @@ int main()
             int option = 0;
             sscanf(input, "%*s %d", &option);
             print(board, option);
+            exit(0);
 
             continue;
         }
@@ -130,8 +131,6 @@ int main()
 
             sscanf(input, "%*s %c %d %d %d %d", &name, &carriersCount, &battleshipsCount, &cruisersCount, &destroyersCount);
 
-            puts("cipa");
-
             PlayerBoard* playerBoard = findPlayerBoardByName(name, playerBoards, playerBoardsCount);
 
             if (playerBoard == NULL) {
@@ -139,11 +138,7 @@ int main()
                 continue;
             }
 
-            puts("huj");
-
             int result = initDefaultShips(playerBoard, carriersCount, battleshipsCount, cruisersCount, destroyersCount);
-
-            puts("pizda");
 
             continue;
         }

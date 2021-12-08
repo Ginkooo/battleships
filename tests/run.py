@@ -26,10 +26,9 @@ for file in sorted(glob.glob(f"{tests_folder}/*.in")):
     outfile = f"{number}.out"
 
     cmd = f"{source_folder}/a.out"
-    print(cmd)
     proc = subprocess.Popen(cmd, shell=True, stdout=PIPE, stdin=PIPE, stderr=PIPE)
     try:
         out, _ = proc.communicate(input=open(infile, "rb").read(), timeout=2)
     except:
         out, _ = proc.communicate()
-    print(out)
+    print(out.decode())
