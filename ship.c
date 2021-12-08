@@ -15,12 +15,24 @@ int initAndPlaceShip(PlayerBoard* playerBoard, Board* board, int y, int x, char 
     ship->position[0] = y;
     ship->position[1] = x;
     ship->direction = direction;
-    ship->cells = getCellsOccupiedByShip(ship, board);
+
+    Cell** cells = getCellsOccupiedByShip(ship, board);
+    if (cells == NULL) {
+        return -3;
+    }
+
+    ship->cells = cells;
+
+    ship->owner = playerBoard;
+    ship->randomId = rand();
     for (int i = 0; i < ship->length; i++) {
-        int damaged = shipParts[i] == '0' ? 0 : 1;
+        int damaged = shipParts[i] == '0' ? 1 : 0;
         ship->parts[i].damaged = damaged;
     }
     ship->placed = 1;
+
+    refreshCells(board);
+
     return 0;
 }
 

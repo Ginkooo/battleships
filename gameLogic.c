@@ -123,12 +123,12 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
         }
 
         if (!getRemainitParts(board->playerBoards[0])) {
-            printf("%c WON", board->playerBoards[1]->name);
+            printf("%c won", board->playerBoards[1]->name);
             return 0;
         }
 
         if (!getRemainitParts(board->playerBoards[1])) {
-            printf("%c WON", board->playerBoards[0]->name);
+            printf("%c won", board->playerBoards[0]->name);
             return 0;
         }
     }

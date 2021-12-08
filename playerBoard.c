@@ -7,8 +7,8 @@
 
 int verifyIfFitsPlayerAllowedDimensions(int y, int x, int* allowedDimensions) {
 
-    int yIsInRange = y >= allowedDimensions[0] && y < allowedDimensions[1];
-    int xIsInRange = x >= allowedDimensions[2] && x < allowedDimensions[3];
+    int yIsInRange = y >= allowedDimensions[0] && y <= allowedDimensions[1];
+    int xIsInRange = x >= allowedDimensions[2] && x <= allowedDimensions[3];
 
     if (!yIsInRange || !xIsInRange) {
         return 0;

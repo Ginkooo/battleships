@@ -170,34 +170,9 @@ int main()
 
         if (beginsWith("INIT_POSITION", input)) {
             char name = 'A';
-            int y1 = -1, y2 = -1, x1 = -1, x2 = -1;
-            sscanf(input, "%*s %c %d %d %d %d", &name, &y1, &y2, &x1, &x2);
-            int valuesUnspecified = (y1 < 0 || y2 < 0 || x2 < 0 || x2 < 0);
-            if (valuesUnspecified) {
-                switch (name) {
-                    case 'A':
-                        y1 = 0;
-                        y2 = board->dimensions[0] / 2;
-                        break;
-                    case 'B':
-                        y1 = board->dimensions[0] / 2;
-                        y2 = board->dimensions[0];
-                        break;
-                }
-                x1 = 0;
-                x2 = board->dimensions[1];
-            }
-
+            int y1, y2, x1, x2;
+            sscanf(input, "%*s %c %d %d %d %d", &name, &y1, &x1, &y2, &x2);
             PlayerBoard* playerBoard = findPlayerBoardByName(name, playerBoards, playerBoardsCount);
-            if (playerBoard == NULL) {
-                perror("Wrong player name");
-                continue;
-            }
-
-            if (y1 <= board->dimensions[0] || y2 <= board->dimensions[0] || abs(y2-y1) < 2 || x1 < board->dimensions[1] || x1 < board->dimensions[1] || (abs(x2-x1) < 2)) {
-                perror("Wrong positions");
-                continue;
-            }
 
             playerBoard->allowedDimensions[0] = y1;
             playerBoard->allowedDimensions[1] = y2;
