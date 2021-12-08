@@ -65,6 +65,36 @@ int main()
             inputCount = 0;
         }
 
+        if (beginsWith("[state]", input)) {
+            StateValue* value = peek(&board->stateStack);
+            if (topIsNotNullAndHasValue(&board->stateStack, STATE)) {
+                pop(&board->stateStack);
+                continue;
+            }
+            push(&board->stateStack, STATE);
+            continue;
+        }
+
+        if (beginsWith("[playerA]", input)) {
+            StateValue* value = peek(&board->stateStack);
+            if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_ONE)) {
+                pop(&board->stateStack);
+                continue;
+            }
+            push(&board->stateStack, PLAYER_ONE);
+            continue;
+        }
+
+        if (beginsWith("[playerB]", input)) {
+            StateValue* value = peek(&board->stateStack);
+            if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_TWO)) {
+                pop(&board->stateStack);
+                continue;
+            }
+            push(&board->stateStack, PLAYER_TWO);
+            continue;
+        }
+
         if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_ONE) || topIsNotNullAndHasValue(&board->stateStack, PLAYER_TWO)) {
             handlePlayerCommand(board, input, inputSz);
             continue;
@@ -169,35 +199,6 @@ int main()
             continue;
         }
 
-        if (beginsWith("[state]", input)) {
-            StateValue* value = peek(&board->stateStack);
-            if (topIsNotNullAndHasValue(&board->stateStack, STATE)) {
-                pop(&board->stateStack);
-                continue;
-            }
-            push(&board->stateStack, STATE);
-            continue;
-        }
-
-        if (beginsWith("[playerA]", input)) {
-            StateValue* value = peek(&board->stateStack);
-            if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_ONE)) {
-                pop(&board->stateStack);
-                continue;
-            }
-            push(&board->stateStack, PLAYER_ONE);
-            continue;
-        }
-
-        if (beginsWith("[playerB]", input)) {
-            StateValue* value = peek(&board->stateStack);
-            if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_TWO)) {
-                pop(&board->stateStack);
-                continue;
-            }
-            push(&board->stateStack, PLAYER_TWO);
-            continue;
-        }
 
         perror("Wrong command");
 
