@@ -7,13 +7,8 @@
 #include "ship.h"
 
 Board* createBoard(int y, int x) {
-	if (y % 2 == 1) {
-        return NULL;
-	}
-
 	PlayerBoard* playerOneBoard = malloc(sizeof(PlayerBoard));
 	if (playerOneBoard == NULL) {
-        perror("Number of columns have to be even to split them between two players\n");
 		return NULL;;
 	}
 	playerOneBoard->name = 'A';

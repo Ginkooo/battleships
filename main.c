@@ -165,8 +165,6 @@ int main()
             continue;
         }
 
-        exit(-7);
-
         perror("Wrong command");
 
         puts("\n");
