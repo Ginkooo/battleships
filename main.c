@@ -79,10 +79,6 @@ int main()
             }
         }
 
-        for (int i = 0; i < 4; i++) {
-            puts(inputHistory[i]);
-        }
-
         if (beginsWith("[state]", input)) {
             StateValue* value = peek(&board->stateStack);
             if (topIsNotNullAndHasValue(&board->stateStack, STATE)) {
