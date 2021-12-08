@@ -24,11 +24,21 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
 
         sscanf(input, "%*s %d %d %c %d %s", &y, &x, &direction, &ithShip, shipClass);
 
+        if (y > playerBoard->allowedDimensions[0] || x > playerBoard->allowedDimensions[1] || y <= 0 || x <= 0) {
+            puts("NOT IN STARTING POSITION\n");
+            return -3;
+        }
+
         Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
 
         if (ship == NULL) {
-            perror("There is no ship like that");
-            return -2;
+            puts("ALL SHIPS OF THE CLASS ALREADY SET\n");
+            return -5;
+        }
+
+        if (ship->placed) {
+            puts("SHIP ALREADY PRESENT\n");
+            return -4;
         }
 
         ship->placed = 1;

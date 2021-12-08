@@ -121,10 +121,20 @@ int main()
             char name = 'A';
             int y1 = -1, y2 = -1, x1 = -1, x2 = -1;
             sscanf(input, "%*s %c %d %d %d %d", &name, &y1, &y2, &x1, &x2);
-            int oneOfTheValuesIsWrong = (y1 < 0 || y2 < 0 || x2 < 0 || x2 < 0);
-            if (oneOfTheValuesIsWrong) {
-                perror("Wrong values\n");
-                continue;
+            int valuesUnspecified = (y1 < 0 || y2 < 0 || x2 < 0 || x2 < 0);
+            if (valuesUnspecified) {
+                switch (name) {
+                    case 'A':
+                        y1 = 0;
+                        y2 = board->dimensions[0] / 2;
+                        break;
+                    case 'B':
+                        y1 = board->dimensions[0] / 2 + 1;
+                        y2 = board->dimensions[0];
+                        break;
+                }
+                x1 = board->dimensions[1];
+                x2 = board->dimensions[1];
             }
 
             PlayerBoard* playerBoard = findPlayerBoardByName(name, playerBoards, playerBoardsCount);
