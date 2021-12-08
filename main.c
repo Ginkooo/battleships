@@ -60,7 +60,6 @@ int main()
 
     while (strncmp(input, "END", 3)) {
         board->state = LOBBY;
-        printf("What do you want to do?: ");
         for (int i = 0; i < inputSz; i++) {
             input[i] = '\0';
         }

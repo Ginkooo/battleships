@@ -51,7 +51,6 @@ int refreshCells(Board* board) {
             for (int j = 0; j < ship->length; j++) {
                 Cell* cellOccupied = cellsOccupiedByShip[j];
                 cellOccupied->cellType = SHIP;
-                puts("SHIP cell");
                 cellsChecked[cellIdx] = cellOccupied;
                 cellIdx++;
             }
