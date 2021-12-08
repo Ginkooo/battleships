@@ -16,6 +16,7 @@ int main()
 
     for (int i = 0; i < 4; i++) {
         inputHistory[i] = malloc(50*sizeof(char));
+        memcpy(inputHistory[i], "UNDEFINED", strlen("UNDEFINED"));
     }
 
     int inputCount = 0;
