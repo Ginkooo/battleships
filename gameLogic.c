@@ -12,24 +12,25 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
         perror("Its the state state");
         return -6;
     }
-    int turn = 0;
-    board->turn = turn;
+    PlayerBoard* playerBoard = NULL;
+    if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_ONE)) {
+        playerBoard = board->playerBoards[0];
+    }
+    if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_TWO)) {
+        playerBoard = board->playerBoards[1];
+    }
 
-    PlayerBoard* playerBoard = board->playerBoards[turn];
+    if (!playerBoard) {
+        perror("Fatal error");
+        return -100;
+    }
+
     if (beginsWith("PLACE_SHIP", input)) {
         int ithShip = 0, y = 0, x = 0;
         char shipClass[3] = "DES";
         char direction;
 
         sscanf(input, "%*s %d %d %c %d %s", &y, &x, &direction, &ithShip, shipClass);
-
-        int yIsInRange = y >= playerBoard->allowedDimensions[0] && y < playerBoard->allowedDimensions[1];
-        int xIsInRange = x >= playerBoard->allowedDimensions[2] && x < playerBoard->allowedDimensions[3];
-
-        if (!yIsInRange || !xIsInRange) {
-            printError(input, "NOT IN STARTING POSITION");
-            return -3;
-        }
 
         Ship* ship = findIthShipOfClass(ithShip, shipClass, playerBoard->ships, getNumberOfShips(playerBoard));
 
@@ -81,6 +82,25 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
         sscanf(input, "%*s %d %d", &y, &x);
 
         Cell* cell = &board->innerBoard[y][x];
+
+        for (int i = 0; i < getNumberOfShips(board->playerBoards[0]); i++) {
+            Ship* ship = board->playerBoards[0]->ships[i];
+            Cell** shipCells = getCellsOccupiedByShip(ship, board);
+            if (shipCells == NULL) {
+                continue;
+            }
+            if (!isInArray(cell, shipCells, ship->length)) {
+                continue;
+            }
+            int idx = 0;
+            for (int i = 0; i < ship->length; i++) {
+                if (cell == shipCells[i]) {
+                    break;
+                }
+                idx++;
+            }
+            ship->parts[idx].damaged = 1;
+        }
     }
 
     return 0;

@@ -39,10 +39,11 @@ int main()
 
     playerBoards[0]->allowedDimensions[0] = 0;
     playerBoards[0]->allowedDimensions[1] = board->dimensions[0] / 2;
-    playerBoards[1]->allowedDimensions[0] = board->dimensions[0] / 2;
-    playerBoards[1]->allowedDimensions[1] = board->dimensions[0];
     playerBoards[0]->allowedDimensions[2] = 0;
     playerBoards[0]->allowedDimensions[3] = board->dimensions[1];
+
+    playerBoards[1]->allowedDimensions[0] = board->dimensions[0] / 2;
+    playerBoards[1]->allowedDimensions[1] = board->dimensions[0];
     playerBoards[1]->allowedDimensions[2] = 0;
     playerBoards[1]->allowedDimensions[3] = board->dimensions[1];
 
@@ -129,15 +130,23 @@ int main()
             int cruisersCount = defaultCruisersCount;
             int destroyersCount = defaultDestroyersCount;
 
-            PlayerBoard* playerBoard = findPlayerBoardByName(name, playerBoards, playerBoardsCount);
 
             sscanf(input, "%*s %c %d %d %d %d", &name, &carriersCount, &battleshipsCount, &cruisersCount, &destroyersCount);
 
-            int result = initDefaultShips(playerBoard, carriersCount, battleshipsCount, cruisersCount, destroyersCount);
+            puts("cipa");
 
-            if (result != 0) {
+            PlayerBoard* playerBoard = findPlayerBoardByName(name, playerBoards, playerBoardsCount);
+
+            if (playerBoard == NULL) {
+                perror("Could not find player");
                 continue;
             }
+
+            puts("huj");
+
+            int result = initDefaultShips(playerBoard, carriersCount, battleshipsCount, cruisersCount, destroyersCount);
+
+            puts("pizda");
 
             continue;
         }

@@ -46,6 +46,11 @@ Cell** getCellsOccupiedByShip(Ship* self, Board* board) {
 
     for (int i = 0; i < self->length; i++) {
         cells[i] = &board->innerBoard[currY][currX];
+
+        if (!verifyIfFitsPlayerAllowedDimensions(currY, currX, self->owner->allowedDimensions)) {
+            return NULL;
+        }
+
         if (self->direction == 'N') {
             currY++;
         } else if (self->direction == 'S') {
@@ -55,9 +60,6 @@ Cell** getCellsOccupiedByShip(Ship* self, Board* board) {
         } else if (self->direction == 'W') {
             currX--;
         } else {
-            return NULL;
-        }
-        if (!verifyIfFitsPlayerAllowedDimensions(currY, currX, self->owner->allowedDimensions)) {
             return NULL;
         }
     }

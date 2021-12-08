@@ -6,6 +6,7 @@
 #include "ship.h"
 
 int verifyIfFitsPlayerAllowedDimensions(int y, int x, int* allowedDimensions) {
+
     int yIsInRange = y >= allowedDimensions[0] && y < allowedDimensions[1];
     int xIsInRange = x >= allowedDimensions[2] && x < allowedDimensions[3];
 
@@ -68,6 +69,8 @@ int initDefaultShips(PlayerBoard* self, int carriersCount, int battleshipsCount,
     for (int i = 0; i < shipsCount; i++) {
         Ship* ship = self->ships[i];
         ship->parts = malloc(ship->length * sizeof(ShipPart));
+
+        ship->owner = self;
 
         ShipPart radar = { .damaged = 0, .type = RADAR };
         ship->parts[0] = radar;

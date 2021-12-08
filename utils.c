@@ -9,7 +9,7 @@ int beginsWith(const char *pre, const char *str) {
 
 
 PlayerBoard* findPlayerBoardByName(const char name, PlayerBoard* playerBoards[], int playerBoardsCount) {
-    for (int i = 1; i < playerBoardsCount; i++) {
+    for (int i = 0; i < playerBoardsCount; i++) {
         if (playerBoards[i]->name == name) {
             return playerBoards[i];
         }
