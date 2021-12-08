@@ -49,6 +49,6 @@ Cell** getCellsOccupiedByShip(Ship* self, Board* board);
 
 int moveShip(Ship* self, Board* board, char direction);
 
-char getCharOfShipPart(Cell* cell, Board* board);
+char getCharOfShipPart(Cell* cell, Board* board, int option);
 
 #endif

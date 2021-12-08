@@ -138,7 +138,7 @@ int moveShip(Ship* self, Board* board, char direction) {
     return 0;
 }
 
-char getCharOfShipPart(Cell* cell, Board* board) {
+char getCharOfShipPart(Cell* cell, Board* board, int option) {
     for (int i = 0; i < 2; i++) {
         PlayerBoard* playerBoard = board->playerBoards[i];
         for (int j = 0; j < getNumberOfShips(playerBoard); j++) {
@@ -151,6 +151,15 @@ char getCharOfShipPart(Cell* cell, Board* board) {
                 if (shipCells[k] != cell) {
                     continue;
                 }
+                ShipPart* shipPart = &ship->parts[k];
+                if (shipPart->damaged) {
+                    return 'x';
+                }
+
+                if (option == 0) {
+                    return '+';
+                }
+
                 if (k == 0) {
                     return shipChars[RADAR];
                 } else if (k == 1) {

@@ -65,6 +65,42 @@ int print(Board* self, int option) {
         putchar('\n');
     }
 
+    int playerOnePartsRemaining = 0, playerTwoPartsRemaining = 0;
+
+    Ship** playerOneShips = self->playerBoards[0]->ships;
+    int playerOneShipCount = getNumberOfShips(self->playerBoards[0]);
+
+    for (int i = 0; i < playerOneShipCount; i++) {
+         Ship* ship = playerOneShips[i];
+         if (!ship->placed) {
+             continue;
+         }
+         for (int j = 0; j < ship->length; j++) {
+             ShipPart* part = &ship->parts[j];
+             if (!part->damaged) {
+                 playerOnePartsRemaining++;
+             }
+         }
+    }
+
+    Ship** playerTwoShips = self->playerBoards[1]->ships;
+    int playerTwoShipCount = getNumberOfShips(self->playerBoards[1]);
+
+    for (int i = 0; i < playerTwoShipCount; i++) {
+         Ship* ship = playerTwoShips[i];
+         if (!ship->placed) {
+             continue;
+         }
+         for (int j = 0; j < ship->length; j++) {
+             ShipPart* part = &ship->parts[j];
+             if (!part->damaged) {
+                 playerTwoPartsRemaining++;
+             }
+         }
+    }
+
+    printf("PARTS REMAINING:: A : %d B : %d\n", playerOnePartsRemaining, playerTwoPartsRemaining);
+
     return 0;
 }
 

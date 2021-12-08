@@ -15,11 +15,7 @@ char getPrintable(Cell* self, Board* board, int option) {
         return cellChars[self->cellType];
     }
 
-    if (option == 0) {
-        return '#';
-    }
-
-    return getCharOfShipPart(self, board);
+    return getCharOfShipPart(self, board, option);
 }
 
 int* getCellPosition(Cell* cell, Board* board) {
