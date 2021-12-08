@@ -10,6 +10,13 @@
 int main()
 {
 	puts("Welcome to battleships!");
+    char** inputHistory = malloc(50*sizeof(char*));
+
+    for (int i = 0; i < 50; i++) {
+        inputHistory[i] = malloc(50*sizeof(char));
+    }
+
+    int inputCount = 0;
 
     int defaultCarriersCount = 1;
     int defaultBattleshipsCount = 2;
@@ -40,6 +47,8 @@ int main()
         board->state = LOBBY;
         printf("What do you want to do?: ");
         fgets(input, inputSz, stdin);
+        inputHistory[inputCount] = input;
+        inputCount++;
 
         if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_ONE) || topIsNotNullAndHasValue(&board->stateStack, PLAYER_TWO)) {
             handlePlayerCommand(board, input, inputSz);
