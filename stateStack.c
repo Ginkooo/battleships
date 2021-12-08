@@ -16,6 +16,7 @@ void push(StateStack* self, StateValue stateValue) {
     state.value = stateValue;
     state.prev = NULL;
     if (self->size == 0) {
+        self->top = malloc(sizeof(GameState));
         *self->top = state;
         self->size++;
         return;
@@ -25,10 +26,14 @@ void push(StateStack* self, StateValue stateValue) {
     self->size++;
 }
 
-StateValue pop(StateStack* self) {
-    GameState state = *self->top;
-    self->top = state.prev;
-    return state.value;
+StateValue* pop(StateStack* self) {
+    if (self->size == 0) {
+        return NULL;
+    }
+    GameState* state = self->top;
+    self->top = state->prev;
+    self->size--;
+    return &state->value;
 }
 
 StateValue* peek(StateStack* self) {

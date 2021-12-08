@@ -137,7 +137,7 @@ int main()
 
         if (beginsWith("[state]", input)) {
             StateValue* value = peek(&board->stateStack);
-            if (value != NULL && *value == STATE) {
+            if (topIsNotNullAndHasValue(&board->stateStack, STATE)) {
                 pop(&board->stateStack);
                 continue;
             }
@@ -147,7 +147,7 @@ int main()
 
         if (beginsWith("[playerA]", input)) {
             StateValue* value = peek(&board->stateStack);
-            if (value != NULL && *value == PLAYER_ONE) {
+            if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_ONE)) {
                 pop(&board->stateStack);
                 continue;
             }
@@ -157,7 +157,7 @@ int main()
 
         if (beginsWith("[playerB]", input)) {
             StateValue* value = peek(&board->stateStack);
-            if (value != NULL && *value == PLAYER_TWO) {
+            if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_TWO)) {
                 pop(&board->stateStack);
                 continue;
             }
