@@ -56,9 +56,9 @@ Cell** getCellsOccupiedByShip(Ship* self, Board* board) {
         } else if (self->direction == 'S') {
             currY--;
         } else if (self->direction == 'E') {
-            currX++;
-        } else if (self->direction == 'W') {
             currX--;
+        } else if (self->direction == 'W') {
+            currX++;
         } else {
             return NULL;
         }
