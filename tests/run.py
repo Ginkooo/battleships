@@ -26,10 +26,7 @@ for file in sorted(glob.glob(f"{tests_folder}/*.in")):
     outfile = f"{tests_folder}/{number}.out"
 
     proc = subprocess.Popen(f"./a.out", shell=True, stdout=PIPE, stdin=PIPE)
-    proc.stdin.write(infile.read_bytes())
-    print(infile.read_text())
+    proc.stdin.writelines(open(outfile, "rb").readlines())
     while True:
         line = proc.stdout.readline()
-        if not line:
-            break
         print(line)
