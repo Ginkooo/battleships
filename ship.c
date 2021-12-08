@@ -81,10 +81,10 @@ int moveShip(Ship* self, Board* board, char direction) {
                     self->position[0]++;
                     break;
                 case 'E':
-                    self->position[1]--;
+                    self->position[1]++;
                     break;
                 case 'W':
-                    self->position[1]++;
+                    self->position[1]--;
                     break;
             }
             break;
@@ -92,13 +92,13 @@ int moveShip(Ship* self, Board* board, char direction) {
             switch (self->direction) {
                 case 'N':
                     self->position[0] = initialBottomPosition[0];
-                    self->position[1] = self->position[1] - self->length - 1;
-                    self->direction = 'E';
+                    self->position[1] = self->position[1] + self->length - 1;
+                    self->direction = 'W';
                     break;
                 case 'S':
                     self->position[0] = initialBottomPosition[0];
-                    self->position[1] = self->position[1] + self->length - 1;
-                    self->direction = 'W';
+                    self->position[1] = self->position[1] - self->length - 1;
+                    self->direction = 'E';
                     break;
                 case 'E':
                     self->position[1] = initialBottomPosition[1];

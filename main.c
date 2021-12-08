@@ -12,8 +12,6 @@ char* inputHistory[11];
 
 int main()
 {
-	puts("Welcome to battleships!");
-
     for (int i = 0; i < 11; i++) {
         inputHistory[i] = calloc(50, sizeof(char));
         memcpy(inputHistory[i], "UNDEFINED", strlen("UNDEFINED"));
@@ -221,9 +219,5 @@ int main()
             continue;
         }
 
-
-        perror("Wrong command");
-
-        puts("\n");
     }
 }
