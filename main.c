@@ -15,7 +15,7 @@ int main()
 	puts("Welcome to battleships!");
 
     for (int i = 0; i < 4; i++) {
-        inputHistory[i] = malloc(50*sizeof(char));
+        inputHistory[i] = calloc(50, sizeof(char));
         memcpy(inputHistory[i], "UNDEFINED", strlen("UNDEFINED"));
     }
 
@@ -50,21 +50,37 @@ int main()
     initDefaultShips(playerBoards[1], defaultCarriersCount, defaultBattleshipsCount, defaultCruisersCount, defaultDestroyersCount);
 
 	int inputSz = 40;
-	char* input = malloc(inputSz * sizeof(char));
+	char* input = calloc(inputSz, sizeof(char));
 	if (!input) {
 		return -1;
 	}
 
+    int historyCounter = 0;
+
     while (strncmp(input, "END", 3)) {
         board->state = LOBBY;
         printf("What do you want to do?: ");
+        for (int i = 0; i < inputSz; i++) {
+            input[i] = '\0';
+        }
         fgets(input, inputSz, stdin);
-        if (memcmp(inputHistory[inputCount], input, inputSz)) {
-            memcpy(inputHistory[inputCount], input, inputSz);
-            inputCount++;
-            if (inputCount == 4) {
-                inputCount = 0;
+
+        int isThere = 0;
+        for (int i = 0; i < 4; i++) {
+            if (!strcmp(inputHistory[i], input)) {
+                isThere = 1;
+                break;
             }
+        }
+        if (!isThere) {
+            strcpy(inputHistory[historyCounter++], input);
+            if (historyCounter == 4) {
+                historyCounter = 0;
+            }
+        }
+
+        for (int i = 0; i < 4; i++) {
+            puts(inputHistory[i]);
         }
 
         if (beginsWith("[state]", input)) {
