@@ -14,7 +14,7 @@ int main()
 {
 	puts("Welcome to battleships!");
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 11; i++) {
         inputHistory[i] = calloc(50, sizeof(char));
         memcpy(inputHistory[i], "UNDEFINED", strlen("UNDEFINED"));
     }
@@ -66,7 +66,7 @@ int main()
         fgets(input, inputSz, stdin);
 
         int isThere = 0;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 11; i++) {
             if (!strcmp(inputHistory[i], input)) {
                 isThere = 1;
                 break;
@@ -74,7 +74,7 @@ int main()
         }
         if (!isThere) {
             strcpy(inputHistory[historyCounter++], input);
-            if (historyCounter == 4) {
+            if (historyCounter == 11) {
                 historyCounter = 0;
             }
         }
