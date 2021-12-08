@@ -35,6 +35,15 @@ int main()
     playerBoards[1] = board->playerBoards[1];
     int playerBoardsCount = 2;
 
+    playerBoards[0]->allowedDimensions[0] = 0;
+    playerBoards[0]->allowedDimensions[1] = board->dimensions[0] / 2;
+    playerBoards[1]->allowedDimensions[0] = board->dimensions[0] / 2 + 1;
+    playerBoards[1]->allowedDimensions[1] = board->dimensions[0];
+    playerBoards[0]->allowedDimensions[2] = 0;
+    playerBoards[0]->allowedDimensions[3] = board->dimensions[1];
+    playerBoards[1]->allowedDimensions[2] = 0;
+    playerBoards[1]->allowedDimensions[3] = board->dimensions[1];
+
     initDefaultShips(playerBoards[0], defaultCarriersCount, defaultBattleshipsCount, defaultCruisersCount, defaultDestroyersCount);
     initDefaultShips(playerBoards[1], defaultCarriersCount, defaultBattleshipsCount, defaultCruisersCount, defaultDestroyersCount);
 

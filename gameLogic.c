@@ -24,7 +24,10 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
 
         sscanf(input, "%*s %d %d %c %d %s", &y, &x, &direction, &ithShip, shipClass);
 
-        if (y > playerBoard->allowedDimensions[0] || x > playerBoard->allowedDimensions[1] || y <= 0 || x <= 0) {
+        int yIsInRange = y >= playerBoard->allowedDimensions[0] && y <= playerBoard->allowedDimensions[1];
+        int xIsInRange = x >= playerBoard->allowedDimensions[2] && x <= playerBoard->allowedDimensions[3];
+
+        if (!yIsInRange || !xIsInRange) {
             puts("NOT IN STARTING POSITION\n");
             return -3;
         }
