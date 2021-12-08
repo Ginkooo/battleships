@@ -52,5 +52,17 @@ int initDefaultShips(PlayerBoard* self, int carriersCount, int battleshipsCount,
         shipIdx++;
     }
 
+    for (int i = 0; i < shipsCount; i++) {
+        Ship* ship = &self->ships[i];
+        ship->parts = malloc(ship->length * sizeof(ShipPart));
+
+        ShipPart radar = { .damaged = 0, .type = RADAR };
+        ship->parts[0] = radar;
+        ShipPart cannon = { .damaged = 0, .type = CANNON };
+        ship->parts[1] = cannon;
+        ShipPart engine = { .damaged = 0, .type = ENGINE };
+        ship->parts[ship->length - 1] = engine;
+    }
+
     return 0;
 }

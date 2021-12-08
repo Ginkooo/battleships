@@ -2,6 +2,7 @@
 #include "string.h"
 
 #include "board.h"
+#include "playerBoard.h"
 #include "cell.h"
 #include "ship.h"
 
@@ -62,8 +63,7 @@ Cell** getCellsOccupiedByShip(Ship* self, Board* board) {
 
 int moveShip(Ship* self, Board* board, char direction) {
     Cell** initialCells = getCellsOccupiedByShip(self, board);
-    int* initialTopPosition = self->position;
-    int newPosition[] = {initialTopPosition[0], initialTopPosition[1]};
+    int* initialBottomPosition = getCellPosition(initialCells[self->length - 1], board);
     switch (direction) {
         case 'F':
             switch (self->direction) {
@@ -71,67 +71,61 @@ int moveShip(Ship* self, Board* board, char direction) {
                     self->position[0]--;
                     break;
                 case 'D':
-                    initialCells[0]->cellType = EMPTY;
-                    newPosition[0]++;
-                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    self->position[0]++;
                     break;
                 case 'L':
-                    initialCells[0]->cellType = EMPTY;
-                    newPosition[1]--;
-                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    self->position[1]--;
                     break;
                 case 'R':
-                    initialCells[self->length - 1]->cellType = EMPTY;
-                    newPosition[1]++;
-                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    self->position[1]++;
                     break;
             }
             break;
         case 'L':
             switch (self->direction) {
                 case 'U':
-                    initialCells[self->length - 1]->cellType = EMPTY;
-                    newPosition[0]--;
-                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    self->position[0] = initialBottomPosition[0];
+                    self->position[1] = self->position[1] - self->length - 1;
+                    self->direction = 'L';
                     break;
                 case 'D':
-                    initialCells[0]->cellType = EMPTY;
-                    newPosition[0]++;
-                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    self->position[0] = initialBottomPosition[0];
+                    self->position[1] = self->position[1] + self->length - 1;
+                    self->direction = 'R';
                     break;
                 case 'L':
-                    initialCells[0]->cellType = EMPTY;
-                    newPosition[1]--;
-                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    self->position[1] = initialBottomPosition[1];
+                    self->position[0] = self->position[0] + self->length - 1;
+                    self->direction = 'D';
                     break;
                 case 'R':
-                    initialCells[self->length - 1]->cellType = EMPTY;
-                    newPosition[1]++;
-                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    self->position[1] = initialBottomPosition[1];
+                    self->position[0] = self->position[0] - self->length - 1;
+                    self->direction = 'U';
                     break;
             }
             break;
         case 'R':
             switch (self->direction) {
                 case 'U':
-                    initialCells[self->length - 1]->cellType = EMPTY;
-                    newPosition[0]--;
-                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    self->position[0] = initialBottomPosition[0];
+                    self->position[1] = self->position[1] + self->length - 1;
+                    self->direction = 'R';
                     break;
                 case 'D':
-                    initialCells[0]->cellType = EMPTY;
-                    newPosition[0]++;
-                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    self->position[0] = initialBottomPosition[0];
+                    self->position[1] = self->position[1] - self->length - 1;
+                    self->direction = 'L';
                     break;
                 case 'L':
-                    initialCells[0]->cellType = EMPTY;
-                    newPosition[1]--;
-                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    self->position[1] = initialBottomPosition[1];
+                    self->position[0] = self->position[0] - self->length - 1;
+                    self->direction = 'U';
                     break;
                 case 'R':
-                    initialCells[self->length - 1]->cellType = EMPTY;
-                    newPosition[1]++;
-                    board->innerBoard[newPosition[0]][newPosition[1]].cellType = SHIP;
+                    self->position[1] = initialBottomPosition[1];
+                    self->position[0] = self->position[0] + self->length - 1;
+                    self->direction = 'D';
                     break;
             }
             break;
@@ -140,4 +134,32 @@ int moveShip(Ship* self, Board* board, char direction) {
     refreshCells(board);
 
     return 0;
+}
+
+char getCharOfShipPart(Cell* cell, Board* board) {
+    for (int i = 0; i < 2; i++) {
+        PlayerBoard* playerBoard = board->playerBoards[i];
+        for (int j = 0; i < getNumberOfShips(playerBoard); j++) {
+            Ship* ship = &playerBoard->ships[j];
+            Cell** shipCells = getCellsOccupiedByShip(ship, board);
+            if (shipCells == NULL) {
+                return ' ';
+            }
+            for (int k = 0; k < ship->length; k++) {
+                if (shipCells[k] != cell) {
+                    continue;
+                }
+                if (k == 0) {
+                    return shipChars[RADAR];
+                } else if (k == 1) {
+                    return shipChars[CANNON];
+                } else if (k == ship->length - 1) {
+                    return shipChars[ENGINE];
+                } else {
+                    return shipChars[NORMAL];
+                }
+            }
+        }
+    }
+    return '+';
 }

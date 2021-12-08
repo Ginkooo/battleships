@@ -20,7 +20,10 @@ int main()
         perror("Something went wrong");
     }
 
-    PlayerBoard* playerBoards[] = {board->playerBoards[0], board->playerBoards[1]};
+
+    PlayerBoard* playerBoards[2];
+    playerBoards[0] = board->playerBoards[0];
+    playerBoards[1] = board->playerBoards[1];
     int playerBoardsCount = 2;
 
     initDefaultShips(playerBoards[0], defaultCarriersCount, defaultBattleshipsCount, defaultCruisersCount, defaultDestroyersCount);

@@ -52,6 +52,14 @@ int startGameLogic(Board* board) {
 
             moveShip(ship, board, direction);
         }
+
+        if (beginsWith("SHOOT", input)) {
+            int y, x;
+
+            sscanf(input, "%*s %d %d", &y, &x);
+
+            Cell* cell = &board->innerBoard[y][x];
+        }
     }
 
     return 0;

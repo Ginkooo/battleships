@@ -59,8 +59,8 @@ int print(Board* self) {
     int columnCount = self->dimensions[1];
     for (int y = 0; y < rowCount; y++) {
         for (int x = 0; x < columnCount; x++) {
-            Cell cell = self->innerBoard[y][x];
-            putchar(getPrintable(cell));
+            Cell* cell = &self->innerBoard[y][x];
+            putchar(getPrintable(cell, self));
         }
         putchar('\n');
     }

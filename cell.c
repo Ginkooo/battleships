@@ -10,8 +10,12 @@ void initCell(Cell* self) {
 	self->cellType = EMPTY;
 }
 
-char getPrintable(Cell self) {
- 	return cellChars[self.cellType];
+char getPrintable(Cell* self, Board* board) {
+    if (self->cellType != SHIP) {
+        return cellChars[self->cellType];
+    }
+
+    return getCharOfShipPart(self, board);
 }
 
 int* getCellPosition(Cell* cell, Board* board) {
@@ -54,7 +58,7 @@ int refreshCells(Board* board) {
     for (int y = 0; y < board->dimensions[0]; y++) {
         for (int x = 0; x < board->dimensions[1]; x++) {
             Cell* cell = &board->innerBoard[y][x];
-            if (cell->cellType == SHIP && isInArray(cell, cellsChecked, cellIdx + 1)) {
+            if (cell->cellType == SHIP && !isInArray(cell, cellsChecked, cellIdx + 1)) {
                 cell->cellType = EMPTY;
             }
         }
