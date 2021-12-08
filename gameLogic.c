@@ -62,7 +62,9 @@ int handlePlayerCommand(Board* board, char* input, int inputSz) {
     }
 
     if (beginsWith("PRINT", input)) {
-        print(board);
+        int option = 0;
+        sscanf(input, "%*s %d", &option);
+        print(board, option);
     }
 
     if (beginsWith("MOVE", input)) {

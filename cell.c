@@ -10,9 +10,13 @@ void initCell(Cell* self) {
 	self->cellType = EMPTY;
 }
 
-char getPrintable(Cell* self, Board* board) {
+char getPrintable(Cell* self, Board* board, int option) {
     if (self->cellType != SHIP) {
         return cellChars[self->cellType];
+    }
+
+    if (option == 0) {
+        return '#';
     }
 
     return getCharOfShipPart(self, board);

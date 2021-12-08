@@ -54,13 +54,13 @@ Board* createBoard(int y, int x) {
     return board;
 }
 
-int print(Board* self) {
+int print(Board* self, int option) {
     int rowCount = self->dimensions[0];
     int columnCount = self->dimensions[1];
     for (int y = 0; y < rowCount; y++) {
         for (int x = 0; x < columnCount; x++) {
             Cell* cell = &self->innerBoard[y][x];
-            putchar(getPrintable(cell, self));
+            putchar(getPrintable(cell, self, option));
         }
         putchar('\n');
     }

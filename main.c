@@ -103,9 +103,9 @@ int main()
         }
 
         if (beginsWith("PRINT", input)) {
-            int option;
+            int option = 0;
             sscanf(input, "%*s %d", &option);
-            print(board);
+            print(board, option);
 
             continue;
         }

@@ -21,7 +21,7 @@ typedef struct Cell {
 
 void initCell(Cell* self);
 
-char getPrintable(Cell* self, Board* board);
+char getPrintable(Cell* self, Board* board, int option);
 
 int* getCellPosition(Cell* cell, Board* board);
 

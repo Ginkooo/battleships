@@ -23,7 +23,7 @@ typedef struct Board {
 
 Board* createBoard(int y, int x);
 
-int print(Board* self);
+int print(Board* self, int option);
 
 int initCells(Board* self);
 
