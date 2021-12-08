@@ -4,12 +4,17 @@
 #include <stdlib.h>
 
 StateStack init() {
-    StateStack ret = { .top = malloc(sizeof(GameState)), .size = 0 };
+    GameState* top = malloc(sizeof(GameState));
+    StateStack ret;
+    ret.top = top;
+    ret.size = 0;
     return ret;
 }
 
 void push(StateStack* self, StateValue stateValue) {
-    GameState state = { .value = stateValue, .prev = NULL };
+    GameState state;
+    state.value = stateValue;
+    state.prev = NULL;
     if (self->size == 0) {
         *self->top = state;
         self->size++;

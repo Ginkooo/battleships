@@ -36,6 +36,8 @@ typedef struct Ship {
     int position[2];
     int length;
     int placed;
+    int shots;
+    int moves;
     ShipPart* parts;
     Cell** cells;
 } Ship;
