@@ -41,7 +41,7 @@ int refreshCells(Board* board) {
     Cell** cellsChecked = malloc(boardSize * sizeof(Cell*));
     int cellIdx = 0;
     for (int i = 0; i < shipsCount; i++) {
-        Ship* ship = &playerBoard->ships[i];
+        Ship* ship = playerBoard->ships[i];
         if (!ship->placed) {
             continue;
         }

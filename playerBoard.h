@@ -8,7 +8,7 @@ typedef struct PlayerBoard {
     int numberOfShips[4]; // carrier, battleship, cruiser, destroyer
     int shipsPlaced[4];
 	char name;
-    Ship* ships;
+    Ship** ships;
 } PlayerBoard;
 
 int getNumberOfShips(PlayerBoard* self);

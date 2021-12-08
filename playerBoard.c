@@ -29,31 +29,34 @@ int initDefaultShips(PlayerBoard* self, int carriersCount, int battleshipsCount,
     self->numberOfShips[3] = destroyersCount;
 
     int shipsCount = carriersCount + battleshipsCount + cruisersCount + destroyersCount;
-    self->ships = malloc(shipsCount * sizeof(Ship));
+    self->ships = malloc(shipsCount * sizeof(Ship*));
+    for (int i = 0; i < shipsCount; i++) {
+        self->ships[i] = malloc(sizeof(Ship));
+    }
     int shipIdx = 0;
     for (int i = 0; i < carriersCount; i++) {
         Ship ship = {.shipClass = CARRIER, .length = 5};
-        self->ships[shipIdx] = ship;
+        *self->ships[shipIdx] = ship;
         shipIdx++;
     }
     for (int i = 0; i < battleshipsCount; i++) {
         Ship ship = {.shipClass = BATTLESHIP, .length = 4};
-        self->ships[shipIdx] = ship;
+        *self->ships[shipIdx] = ship;
         shipIdx++;
     }
     for (int i = 0; i < cruisersCount; i++) {
         Ship ship = {.shipClass = CRUISER, .length = 3};
-        self->ships[shipIdx] = ship;
+        *self->ships[shipIdx] = ship;
         shipIdx++;
     }
     for (int i = 0; i < destroyersCount; i++) {
         Ship ship = {.shipClass = DESTROYER, .length = 2};
-        self->ships[shipIdx] = ship;
+        *self->ships[shipIdx] = ship;
         shipIdx++;
     }
 
     for (int i = 0; i < shipsCount; i++) {
-        Ship* ship = &self->ships[i];
+        Ship* ship = self->ships[i];
         ship->parts = malloc(ship->length * sizeof(ShipPart));
 
         ShipPart radar = { .damaged = 0, .type = RADAR };

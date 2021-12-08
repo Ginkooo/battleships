@@ -4,6 +4,7 @@
 #include "playerBoard.h"
 #include "cell.h"
 #include "stateStack.h"
+#include "ship.h"
 
 Board* createBoard(int y, int x) {
 	if (y % 2 == 1) {

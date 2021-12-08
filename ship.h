@@ -35,6 +35,7 @@ typedef struct Ship {
     char direction;
     int position[2];
     int length;
+    int randomId;
     int placed;
     int shots;
     int moves;
@@ -42,7 +43,7 @@ typedef struct Ship {
     Cell** cells;
 } Ship;
 
-Ship* findIthShipOfClass(int ithShip, char* shipClass, Ship ships[], int shipCount);
+Ship* findIthShipOfClass(int ithShip, char* shipClass, Ship** ships, int shipCount);
 
 Cell** getCellsOccupiedByShip(Ship* self, Board* board);
 

@@ -37,3 +37,10 @@ StateValue* peek(StateStack* self) {
     }
     return &self->top->value;
 }
+
+int topIsNotNullAndHasValue(StateStack* self, StateValue value) {
+    if (self->size == 0) {
+        return 0;
+    }
+    return *peek(self) == value;
+}

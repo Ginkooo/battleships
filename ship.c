@@ -5,8 +5,9 @@
 #include "playerBoard.h"
 #include "cell.h"
 #include "ship.h"
+#include "utils.h"
 
-Ship* findIthShipOfClass(int ithShip, char* shipClass, Ship ships[], int shipCount) {
+Ship* findIthShipOfClass(int ithShip, char* shipClass, Ship** ships, int shipCount) {
     ShipClass typedShipClass;
     if (strcmp("CAR", shipClass) == 0) {
         typedShipClass = CARRIER;
@@ -23,12 +24,13 @@ Ship* findIthShipOfClass(int ithShip, char* shipClass, Ship ships[], int shipCou
 
     int ith = 0;
     for (int i = 0; i < shipCount; i++) {
-        Ship ship = ships[i];
-        if (ship.shipClass != typedShipClass) {
+        Ship* ship = ships[i];
+        if (ship->shipClass != typedShipClass) {
             continue;
         }
         if (ith == ithShip) {
-            return &ships[i];
+            Ship* ret = ships[i];
+            return ret;
         }
         ith++;
     }
@@ -44,13 +46,13 @@ Cell** getCellsOccupiedByShip(Ship* self, Board* board) {
 
     for (int i = 0; i < self->length; i++) {
         cells[i] = &board->innerBoard[currY][currX];
-        if (self->direction == 'U') {
+        if (self->direction == 'N') {
             currY++;
-        } else if (self->direction == 'D') {
+        } else if (self->direction == 'S') {
             currY--;
-        } else if (self->direction == 'L') {
+        } else if (self->direction == 'E') {
             currX++;
-        } else if (self->direction == 'R') {
+        } else if (self->direction == 'W') {
             currX--;
         } else {
             return NULL;
@@ -67,65 +69,65 @@ int moveShip(Ship* self, Board* board, char direction) {
     switch (direction) {
         case 'F':
             switch (self->direction) {
-                case 'U':
+                case 'N':
                     self->position[0]--;
                     break;
-                case 'D':
+                case 'S':
                     self->position[0]++;
                     break;
-                case 'L':
+                case 'E':
                     self->position[1]--;
                     break;
-                case 'R':
+                case 'W':
                     self->position[1]++;
                     break;
             }
             break;
         case 'L':
             switch (self->direction) {
-                case 'U':
+                case 'N':
                     self->position[0] = initialBottomPosition[0];
                     self->position[1] = self->position[1] - self->length - 1;
-                    self->direction = 'L';
+                    self->direction = 'E';
                     break;
-                case 'D':
+                case 'S':
                     self->position[0] = initialBottomPosition[0];
                     self->position[1] = self->position[1] + self->length - 1;
-                    self->direction = 'R';
+                    self->direction = 'W';
                     break;
-                case 'L':
+                case 'E':
                     self->position[1] = initialBottomPosition[1];
                     self->position[0] = self->position[0] + self->length - 1;
-                    self->direction = 'D';
+                    self->direction = 'S';
                     break;
-                case 'R':
+                case 'W':
                     self->position[1] = initialBottomPosition[1];
                     self->position[0] = self->position[0] - self->length - 1;
-                    self->direction = 'U';
+                    self->direction = 'N';
                     break;
             }
             break;
         case 'R':
             switch (self->direction) {
-                case 'U':
+                case 'N':
                     self->position[0] = initialBottomPosition[0];
                     self->position[1] = self->position[1] + self->length - 1;
-                    self->direction = 'R';
+                    self->direction = 'W';
                     break;
-                case 'D':
+                case 'S':
                     self->position[0] = initialBottomPosition[0];
                     self->position[1] = self->position[1] - self->length - 1;
-                    self->direction = 'L';
+                    self->direction = 'E';
                     break;
-                case 'L':
+                case 'E':
                     self->position[1] = initialBottomPosition[1];
                     self->position[0] = self->position[0] - self->length - 1;
-                    self->direction = 'U';
+                    self->direction = 'N';
                     break;
-                case 'R':
+                case 'W':
                     self->position[1] = initialBottomPosition[1];
                     self->position[0] = self->position[0] + self->length - 1;
-                    self->direction = 'D';
+                    self->direction = 'S';
                     break;
             }
             break;
@@ -139,11 +141,11 @@ int moveShip(Ship* self, Board* board, char direction) {
 char getCharOfShipPart(Cell* cell, Board* board) {
     for (int i = 0; i < 2; i++) {
         PlayerBoard* playerBoard = board->playerBoards[i];
-        for (int j = 0; i < getNumberOfShips(playerBoard); j++) {
-            Ship* ship = &playerBoard->ships[j];
+        for (int j = 0; j < getNumberOfShips(playerBoard); j++) {
+            Ship* ship = playerBoard->ships[j];
             Cell** shipCells = getCellsOccupiedByShip(ship, board);
-            if (shipCells == NULL) {
-                return ' ';
+            if (shipCells == NULL || !isInArray(cell, shipCells, ship->length)) {
+                continue;
             }
             for (int k = 0; k < ship->length; k++) {
                 if (shipCells[k] != cell) {

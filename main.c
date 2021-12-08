@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "gameLogic.h"
 #include "ship.h"
+#include "stateStack.h"
 
 int main()
 {
@@ -39,6 +40,11 @@ int main()
         board->state = LOBBY;
         printf("What do you want to do?: ");
         fgets(input, inputSz, stdin);
+
+        if (topIsNotNullAndHasValue(&board->stateStack, PLAYER_ONE) || topIsNotNullAndHasValue(&board->stateStack, PLAYER_TWO)) {
+            handlePlayerCommand(board, input, inputSz);
+            continue;
+        }
 
         if (beginsWith("PRINT", input)) {
             int option;
@@ -91,6 +97,13 @@ int main()
             }
 
             continue;
+        }
+
+        if (beginsWith("REEF", input)) {
+            int y;
+            int x;
+            sscanf(input, "%*s %d %d", &y, &x);
+            board->innerBoard[y][x].cellType = REEF;
         }
 
         if (beginsWith("INIT_POSITION", input)) {
@@ -152,7 +165,7 @@ int main()
             continue;
         }
 
-        handlePlayerCommand(board, input, inputSz);
+        perror("Wrong command");
 
         puts("\n");
     }
