@@ -58,11 +58,12 @@ int main()
         board->state = LOBBY;
         printf("What do you want to do?: ");
         fgets(input, inputSz, stdin);
-        inputHistory[inputCount] = input;
-        memcpy(inputHistory[inputCount], input, inputSz);
-        inputCount++;
-        if (inputCount == 4) {
-            inputCount = 0;
+        if (memcmp(inputHistory[inputCount], input, inputSz)) {
+            memcpy(inputHistory[inputCount], input, inputSz);
+            inputCount++;
+            if (inputCount == 4) {
+                inputCount = 0;
+            }
         }
 
         if (beginsWith("[state]", input)) {
