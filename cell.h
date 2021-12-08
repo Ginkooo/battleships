@@ -10,7 +10,7 @@ typedef enum CellType {
 } CellType;
 
 static char cellChars[] = {
-	'.',
+	' ',
 	'+',
 	'#',
 };
