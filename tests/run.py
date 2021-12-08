@@ -20,6 +20,9 @@ subprocess.check_call(["/usr/bin/clang", "-lm", *c_files])
 
 print("compilation ended")
 
+g_equal = []
+not_equal = []
+
 
 for file in sorted(
     glob.glob(f"{tests_folder}/*.in"),
@@ -37,12 +40,12 @@ for file in sorted(
         out, _ = proc.communicate()
 
     equal = out.decode() == open(outfile).read()
-    if not equal:
-        print("Got:")
-        print(out.decode())
-        print()
-        print("Expected:")
-        print(open(outfile).read())
-        print("Input:")
-        print(infile.read_text())
-        input()
+    if equal:
+        g_equal.append(number)
+    else:
+        not_equal.append(number)
+
+print(len(g_equal) / len(not_equal))
+
+for f in not_equal:
+    print(f)

@@ -286,4 +286,5 @@ int shootAtCell(Cell* cell, Board* board) {
         printf("%c won", board->playerBoards[0]->name);
         exit(0);
     }
+    return 0;
 }
